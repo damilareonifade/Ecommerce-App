@@ -1,0 +1,193 @@
+<!-- Mr Paul Password WPfav2vVWP -->
+{% extends "../base/base.html" %}
+
+
+{% block content %}
+
+    <style>
+        .fa-star.selected {
+          color: green;
+        }
+
+    </style>
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="{% url 'commerce:index' %}">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">{{product.name}} Detail</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-5 pb-5">
+                <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner border">
+                        {% for image in product.product_image.all %}
+                        {% if forloop.first %}
+                            <div class="carousel-item active">
+                        {% else %}
+                            <div class="carousel-item">
+                        {% endif %}
+                            <img class="w-100 h-100" src="{{ image.image.url }}" alt="{{ image.alt }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                        <i class="fa fa-2x fa-angle-left text-dark"></i>
+                    </a>
+                    <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                        <i class="fa fa-2x fa-angle-right text-dark"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-7 pb-5">
+                <h3 class="font-weight-semi-bold">{{ product.name }}</h3>
+                <div class="d-flex mb-3">
+                    {% for i in number_of_stars %}
+                    <div class="text-primary mr-2">
+                        <small class="fas fa-star"></small>
+                    </div>
+                    {% endfor %}
+                    <small class="pt-1">({{ product.product_reviews.count }} Reviews)</small>
+                </div>
+                <h3 class="font-weight-semi-bold mb-4">₦{{ product.showed_price }}</h3>
+                <p class="mb-4">{{ product.product_excerpt }}</p>
+                <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                    <form>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-1" name="size">
+                            <label class="custom-control-label" for="size-1">XS</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-2" name="size">
+                            <label class="custom-control-label" for="size-2">S</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-3" name="size">
+                            <label class="custom-control-label" for="size-3">M</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-4" name="size">
+                            <label class="custom-control-label" for="size-4">L</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-5" name="size">
+                            <label class="custom-control-label" for="size-5">XL</label>
+                        </div>
+                    </form>
+                </div>
+        </div>
+    </div>
+
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tab-pane-1">
+                    <h4 class="mb-3">Product Description</h4>
+                    <p>{{ product.product_excerpt }}</p>
+                    
+                </div>
+                <div class="tab-pane fade" id="tab-pane-2">
+                    <h4 class="mb-3">Additional Information</h4>
+                    <p>{{ product.product_description }}</p>
+                </div>
+                <div class="tab-pane fade" id="tab-pane-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="mb-4">{{ reviews.count }} Review for {{ product.name }}"</h4>
+                            {% for review in reviews %}
+                            <div class="media mb-4">
+                                <img src="{{ reviews.user.userprofile.profile_pics.url }}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                <div class="media-body">
+                                    <h6>{{ review.user.email }}<small> - <i>{{ reviews.created_at }}</i></small></h6>
+                                    <p>{{ review.review }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-4">Leave a review</h4>
+                            <small>Your email address will not be published. Required fields are marked *</small>
+                            <div class="d-flex my-3">
+                                <p class="mb-0 mr-2">Your Rating * :</p>
+                                <div class="text-primary">
+                                    <i id="1" class="far fa-star"></i>
+                                    <i id="2" class="far fa-star"></i>
+                                    <i id="3" class="far fa-star"></i>
+                                    <i id="4" class="far fa-star"></i>
+                                    <i id="5" class="far fa-star"></i>
+                                </div>
+                            </div>
+                            <form>
+                                <div class="form-group">
+                                    <label for="message">Your Review *</label>
+                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <input type="submit"  id="formsubmit" value="Leave Your Review" class="btn btn-primary px-3">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).click("#formsubmit",function (e) {
+    const selectedRating = document.querySelector(".far fa-star.selected").id;
+      e.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: '{% url "commerce:details" product.uuid %}',
+        data: {
+          comment:$("#message").text(),
+          rating: selectedRating,
+          action: 'post',
+        },
+        success: function (response){
+            $("").empty();
+            $.each(response.plan,function(index,value){                    
+                var option = $('<option>');
+                option.val(value.id);
+                option.text(value.plan_description);
+                $("#planidcontainer").css("display", "block");
+                $("#plantypeid").append(option);
+                
+            })
+
+        },
+        error: function (xhr, errmsg, err) {
+            v=alert("fail" + JSON.stringify(err));
+        }
+      });
+    });
+    
+
+    const stars = document.querySelectorAll(".far fa-star");
+    stars.forEach(star => {
+    star.addEventListener("click", function() {
+        stars.forEach(star => star.classList.remove("selected"));
+        this.classList.add("selected");
+    });
+    });
+
+
+    </script>
+{% endblock %}

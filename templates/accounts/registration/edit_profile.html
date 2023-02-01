@@ -1,0 +1,61 @@
+{% extends "../../base/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %} Edit Profile {% endblock %}
+
+{% block content %}
+<div class="row" style="margin-bottom:10%;margin-left:5%;>
+    <div class="col-md-6 col-sm-8">
+        <h1 class="text-muted">Edit Profile</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-primary" role="alert">
+                    <strong class="text-white">{{ form.errors }}</strong>
+                </div>
+                
+            {% endif %}
+            {% if user_form.is_valid and profile_form.is_valid %}
+            <div class="alert alert-primary" role="alert">
+                Details successfully updated!
+            </div>
+            {% endif %}
+            <div class="mb-3">
+                {{ user_form.first_name|as_crispy_field }}
+            </div>
+            <div class="mb-3">
+                {{ user_form.last_name|as_crispy_field }}
+            </div>
+            
+            <div class="mb-3 disabled">
+                {{ user_form.email|as_crispy_field }}
+            </div>
+            <div class="mb-3">
+                {{ profile_form.bio|as_crispy_field }}
+            </div>
+            <div class="mb-3">
+                {{ profile_form.images|as_crispy_field }}
+            </div>
+            <div class="mb-3">
+                {{ profile_form.twitter_link|as_crispy_field }}
+            </div>
+            <div class="mb-3">
+                {{ profile_form.instagram_link|as_crispy_field }}
+            </div>
+
+            <button class="btn btn-danger btn-block py-2 mb-4 font-weight-bold">Update Profile</button>
+        </form>
+        <div class="mb-3">
+            <a href="{% url "accounts:delete_profile" %}"
+                        class="btn btn-danger btn-block py-2 mb-4 font-weight-bold justify-content-between" role="button"
+                        aria-pressed="true">Delete Account</a>
+        </div>
+        <div class="mb-3">
+            <a href="{% url "accounts:password_change" %}"
+                        class="btn btn-danger btn-block py-2 mb-4 font-weight-bold justify-content-between" role="button"
+                        aria-pressed="true">Change Password</a>
+        </div>
+
+    </div>
+</div>
+{% endblock  %}

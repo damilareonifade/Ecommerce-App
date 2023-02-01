@@ -1,0 +1,41 @@
+{% extends "../../base/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block title %}<title>Login</title>{% endblock %}
+
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <script>
+        window.location.href = '{% url "accounts:dashboard" %}';
+    </script>
+    {% endif %}
+    <div class="row mb-3" style="margin-bottom:20%;margin-left:5%;">
+        <div class="col-md-6 col-sm-8 justify-content-md-center">
+            <h1 class="text-muted">Login</h1>
+            <form action="." method="post">
+                {% if form.non_field_errors %}
+                    {{ form.non_field_errors }}
+                {% endif %}
+                {% csrf_token %}
+                <div class="mb-3">
+                {{ form.username|as_crispy_field }}
+                </div>
+                <div class="mb-3">
+                {{ form.password|as_crispy_field }}
+                </div>
+                <button class="btn btn-warning btn-outline-primary text-white index" type="submit">Login</button>
+            </form>
+            <p class="text-muted fw-italics"> If you dont have an account you can <a class="link-primary" href="{% url 'accounts:register' %}" >Register</a> here or click here if you forgot your password <a class="link-primary" href="{% url 'accounts:password_reset' %}">Forgotten password</a></p>
+        </div>
+        <div class="col-md-6 col-sm-8 justify-content-md-center">
+            <div>
+                <img class="img-fluid rounded-top" src="https://source.unsplash.com/700x500" alt="Title">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,7 @@
+{% autoescape off %}
+    Hi {{ user.username }}
+    Please Click on the link below to finish your registration process
+    http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}
+    <button type="submit" class="btn btn-primary"><a href="http://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}">Acitivate your Mail</a></button>
+
+{% endautoescape %}

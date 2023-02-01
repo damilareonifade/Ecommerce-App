@@ -1,0 +1,15 @@
+{% extends "../../base/base.html" %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <script>
+        window.location.href = '{% url "accounts:dashboard" %}';
+    </script>
+    {% endif %}
+    <div class="row" style="margin:20%">
+        <div class="justify-content-between align-items-center">
+            <p class="text-center">Thanks for creating an account an activation link has been sent to you go to your mail to activate your form </p>
+            <a class="btn btn-primary" style="margin-left:45%;" href="{% url 'accounts:login' %}">Login</a>        
+        </div>
+    </div>
+{% endblock%}

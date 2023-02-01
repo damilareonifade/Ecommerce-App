@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER : root 
+      POSTGRES_PASSWORD: root 
+      POSTGRES_DB : ecommerce
+    ports:
+      - "5432:5432"
+    
+    pgadmin:
+      container_name: django_docker
+      
