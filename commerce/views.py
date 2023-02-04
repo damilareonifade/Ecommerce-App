@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
 from .models import *
 from django.db.models import Count,Aggregate,Max,Sum
 from django.core.cache import cache
@@ -22,8 +22,9 @@ def product_detail(request,slug):
     reviews= Reviews.objects.all()
 
     if request.POST.get('action')  == 'post':
-        comment = str(request.POST.get('comment'))
-        rating = int(request.POST.get('rating'))
+        comment = str(request.POST.get('comment',None))
+        rating = str(request.POST.get('rating',None))
+        
         Reviews.objects.create(user=request.user,product=product.id,review=comment,rating=rating)
 
         review =Reviews.objects.all()
@@ -48,13 +49,14 @@ def product_detail(request,slug):
 
 
 def category_product(request,slug):
-    categories = Category.objects.get(slug=slug)
-    products = Product.objects.filter(category=categories)
-
-    return render(request,'store/all_categories.html',{"products":products})
+    categories = Category.objects.prefetch_related('category_product').filter(slug=slug)
+    return render(request,'store/all_categories.html',{"category":categories})
 
 def saved_post(request,slug):
-    post = Product.objects.get(uuid=slug)
-    pass
+    product = Product.objects.get(uuid=slug)
+    if product.saved_post.filter(id =request.user.id).exists():
+        product.saved_post.remove(request.user)
+    else:
+        product.saved_post.add(request.user)
     
-    
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
