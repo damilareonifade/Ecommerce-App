@@ -84,7 +84,7 @@
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                 <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews ({{reviews.count}})</a>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
@@ -141,20 +141,20 @@
     </div>
 </div>
 
+{% endblock %}
 
-
-
+{% block script %}
 <script>
+
     $(document).click("#formsubmit",function (e) {
       const selectedRating = document.querySelector(".far fa-star.selected").id;
       e.preventDefault();
       $.ajax({
-        type: 'POST',
-        url: '{% url "commerce:details" product.uuid %}',
+        type: 'GET',
+        url: '{% url "commerce:review_create" product.uuid %}',
         data: {
           comment:$("#message").val(),
           rating: selectedRating,
-          csrfmiddlewaretoken:"{{csrf_token}}",
           action: 'post',
         },
         // success: function (response){
@@ -169,20 +169,22 @@
         //     })
 
         // },
-        error: function (xhr, errmsg, err) {
-            v=alert("fail" + JSON.stringify(err));
-        }
-      });
+    
+    });
+
+    $(document).ready(function() {
+    alert("Page Loaded");
     });
     
 
-    $('.fa-star').click(function() {
-    var id = $(this).attr('id');
-    for (var i = 1; i <= id; i++) {
-        $('#' + i).removeClass('far').addClass('fas');
-    }
+    $(document).ready(function() {
+    $('.far fa-star').click(function() {
+        $(this).prevAll().removeClass('far').addClass('fas');
+        $(this).removeClass('far').addClass('fas');
+        $(this).nextAll().removeClass('fas').addClass('far');
+    });
     });
 
 
-    </script>
+</script>
 {% endblock %}

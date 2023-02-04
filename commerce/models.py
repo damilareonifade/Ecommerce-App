@@ -57,7 +57,7 @@ class Product(TimeStampedModel):
     product_excerpt = models.CharField(max_length=500,null=True,blank=True,verbose_name=_('Product Short Description'))
     weight = models.FloatField(unique=False,null=False,blank=False,verbose_name=_("product weight"))
     views = models.IntegerField(default=0)
-    saved_post = models.ManyToManyField(User,null=True,related_name='user_saved_post')
+    saved_post = models.ManyToManyField(User,related_name='user_saved_post')
     price = models.DecimalField(decimal_places=2,default=0.00, max_digits=10, null=True, blank=True)
     discount_price = models.DecimalField(decimal_places=2,default=0.00, max_digits=10, null=True, blank=True)
     showed_price = models.DecimalField(decimal_places=2,default=0.00,max_digits=10, null=True, blank=True)

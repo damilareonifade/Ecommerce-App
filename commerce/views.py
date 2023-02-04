@@ -21,17 +21,6 @@ def product_detail(request,slug):
     product.save()
     reviews= Reviews.objects.all()
 
-    if request.POST.get('action')  == 'post':
-        comment = str(request.POST.get('comment',None))
-        rating = str(request.POST.get('rating',None))
-        
-        Reviews.objects.create(user=request.user,product=product.id,review=comment,rating=rating)
-
-        review =Reviews.objects.all()
-        reviews= json.dumps(list(review))
-        plan_obj = json.loads(reviews)
-        response = JsonResponse({'reviews': plan_obj})
-        return response
 
     if product_count <= 19:
         number_of_stars = range(1)
@@ -47,10 +36,29 @@ def product_detail(request,slug):
     
     return render(request,'store/detail.html',{'product':product,"number_of_stars":number_of_stars,'reviews':reviews})
 
+def review_create(request,slug):
+    product = Product.objects.get(uuid=slug)
+    if request.GET.get('action')  == 'post':
+        comment = str(request.GET.get('comment',None))
+        rating = str(request.GET.get('rating',None))
+        print(comment)
+        print(rating)
+        
+        record, created = Reviews.objects.get_or_create(user=request.user,product=product.id,review=comment,rating=rating)
+        if not created:
+            record.rating = rating
+            record.save()
+
+        review =Reviews.objects.all()
+        reviews= json.dumps(list(review))
+        plan_obj = json.loads(reviews)
+        response = JsonResponse({'reviews': plan_obj})
+        return response
+
 
 def category_product(request,slug):
-    categories = Category.objects.prefetch_related('category_product').filter(slug=slug)
-    return render(request,'store/all_categories.html',{"category":categories})
+    categories = Category.objects.prefetch_related('category_product').get(slug=slug)
+    return render(request,'store/category_list.html',{"categories":categories})
 
 def saved_post(request,slug):
     product = Product.objects.get(uuid=slug)

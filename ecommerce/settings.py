@@ -26,6 +26,10 @@ INSTALLED_APPS = [
     'commerce',
     'accounts',
     'crispy_forms',
+    'cloudinary',
+    'cloudinary_storage',
+    'mptt',
+    
 ]
 
 MIDDLEWARE = [
@@ -51,6 +55,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'commerce.context_processor.category_list',
             ],
         },
     },
@@ -112,20 +117,25 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR/'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# MEDIA_ROOT = BASE_DIR/'media'
 
 #default user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 #email_backend
-EMAIL_BACKEND ='django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
 EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': str(os.getenv("CLOUD_NAME")),
+    'API_KEY': str(os.getenv("API_KEY")),
+    'API_SECRET': str(os.getenv("API_SECRET"))
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
