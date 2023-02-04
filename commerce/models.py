@@ -177,7 +177,9 @@ class Reviews(TimeStampedModel):
         return f'{self.user} commented on {self.product}'
     
 
-
+class IpAddress(models.Model):
+    ip_address = models.GenericIPAddressField()
+    product_id = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True,blank=True)
 
 
 # from django.core.exceptions import ValidationError

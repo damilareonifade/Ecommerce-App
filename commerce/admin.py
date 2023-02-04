@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import * 
 
-admin.site.register((Category,ProductAttribute,ProductAttributeValue,ProductTypeAttribute,Stock,Brand,ProductAttributeValues,ProductImage,ProductType,Reviews))
+admin.site.register((Category,ProductAttribute,ProductAttributeValue,ProductTypeAttribute,Stock,Brand,ProductAttributeValues,ProductImage,ProductType,Reviews,IpAddress))
 
 ## Include inline stacke
 

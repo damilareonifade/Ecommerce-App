@@ -5,6 +5,7 @@ from django.core.cache import cache
 from .forms import CommentForm
 import json
 from django.http import JsonResponse
+from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 
 def homepage(request):
     products = Product.objects.select_related('seller', 'brand', 'product_type').annotate(highest_views=Max('views')).order_by('-highest_views')
@@ -17,10 +18,18 @@ def homepage(request):
 def product_detail(request,slug):
     product = Product.objects.get(uuid=slug)
     product_count = product.product_reviews.count()
-    product.views += 1
-    product.save()
-    reviews= Reviews.objects.all()
+    x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(",")[0]
+    else:
+        ip = request.META.get("REMOTE_ADDR")
 
+    review,created = IpAddress.objects.get_or_create(ip_address=ip,product_id=product)
+    if created:
+        product.views += 1
+        product.save()
+
+    reviews= Reviews.objects.all()
 
     if product_count <= 19:
         number_of_stars = range(1)
@@ -58,7 +67,17 @@ def review_create(request,slug):
 
 def category_product(request,slug):
     categories = Category.objects.prefetch_related('category_product').get(slug=slug)
-    return render(request,'store/category_list.html',{"categories":categories})
+    products = categories.category_product.all()
+    paginator = Paginator(products,5)
+    try:
+        page = request.GET.get("page")
+        objects = paginator.get_page(page)
+    except PageNotAnInteger:
+        objects = paginator.page(1)
+    except EmptyPage:
+        objects = paginator.page(paginator.num_pages)
+
+    return render(request,'store/category_list.html',{"categories":categories,'objects':objects})
 
 def saved_post(request,slug):
     product = Product.objects.get(uuid=slug)

@@ -1,6 +1,14 @@
 {% extends '../base/base.html' %}
 
 {% block content %}
+<style>
+
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+</style>
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
@@ -131,7 +139,7 @@
                     <!-- Size End -->
                 </div>
                 <!-- Shop Sidebar End -->
-            {% for product in categories.category_product.all %}
+            {% for product in objects %}
             <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -151,6 +159,56 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="pagination-container">
+        <nav aria-label="Page navigation example"  class="text-center">
+            <ul class="pagination justify-content-center">
+              {% if objects.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">First</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ objects.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&lsaquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+              {% endif %}
+          
+              {% for i in objects.paginator.page_range %}
+                {% if i == objects.number %}
+                  <li class="page-item active">
+                    <span class="page-link">
+                      {{ i }}
+                      <span class="sr-only">(current)</span>
+                    </span>
+                  </li>
+                {% else %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+          
+              {% if objects.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ objects.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&rsaquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ objects.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Last</span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
         </div>
     </div>
     
@@ -172,4 +230,6 @@
             </div>
         </div>
     </div>
+    
+
 {% endblock %}
