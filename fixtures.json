@@ -25,19 +25,7 @@
         "change_message": ""
     }
 },
-{
-    "model": "admin.logentry",
-    "pk": 3,
-    "fields": {
-        "action_time": "2023-01-22T03:34:55.158Z",
-        "user": 1,
-        "content_type": 6,
-        "object_id": "4",
-        "object_repr": "damilareonifade24@gmail.com",
-        "action_flag": 3,
-        "change_message": ""
-    }
-},
+
 {
     "model": "admin.logentry",
     "pk": 4,
@@ -949,6 +937,19 @@
     }
 },
 {
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+        "action_time": "2023-02-04T02:09:03.151Z",
+        "user": 1,
+        "content_type": 20,
+        "object_id": "1",
+        "object_repr": "damilareonifade24@gmail.com commented on Brian Mckay - 6988.00",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"Rating\"]}}]"
+    }
+},
+{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -1669,6 +1670,42 @@
     }
 },
 {
+    "model": "auth.permission",
+    "pk": 81,
+    "fields": {
+        "name": "Can add ip address",
+        "content_type": 21,
+        "codename": "add_ipaddress"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 82,
+    "fields": {
+        "name": "Can change ip address",
+        "content_type": 21,
+        "codename": "change_ipaddress"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 83,
+    "fields": {
+        "name": "Can delete ip address",
+        "content_type": 21,
+        "codename": "delete_ipaddress"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 84,
+    "fields": {
+        "name": "Can view ip address",
+        "content_type": 21,
+        "codename": "view_ipaddress"
+    }
+},
+{
     "model": "contenttypes.contenttype",
     "pk": 1,
     "fields": {
@@ -1826,6 +1863,14 @@
     "fields": {
         "app_label": "commerce",
         "model": "reviews"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+        "app_label": "commerce",
+        "model": "ipaddress"
     }
 },
 {
@@ -2286,7 +2331,7 @@
     "pk": 63,
     "fields": {
         "created_at": "2023-01-25T12:29:35.601Z",
-        "updated_at": "2023-02-02T14:25:02.561Z",
+        "updated_at": "2023-02-04T15:03:51.148Z",
         "uuid": "4a3385ae-2de3-43e4-a9b2-d33aeaed9b62",
         "name": "Brian Mckay",
         "seller": 1,
@@ -2295,7 +2340,7 @@
         "product_description": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident non deserunt sapiente, voluptas tempore ea sit harum ut est cumque libero accusamus reprehenderit ratione numquam iste velit, aliquid quasi quam molestias unde eveniet? Id debitis animi minima repellendus inventore magnam ab odit harum incidunt esse ipsum labore dignissimos odio autem ducimus, iste eligendi quis mollitia vero maxime, minus, aliquam possimus? Commodi dolor magni similique laboriosam fuga ut dolorem iure eaque architecto non sint delectus facilis, cum, velit incidunt rem ea vitae sed corrupti. Odit provident officia dolorem nobis, commodi, aut, suscipit quis ab at omnis quas excepturi asperiores non eligendi fugit repellendus numquam molestias animi amet nemo alias harum architecto magnam ea. Qui similique nam odio eligendi voluptas rerum vel provident maxime beatae architecto ut corrupti explicabo asperiores inventore blanditiis non itaque nostrum quibusdam exercitationem dignissimos nisi, aut ea quisquam. Dignissimos iste fuga minus animi eum voluptatem officiis perferendis recusandae magni similique qui consequuntur aperiam, excepturi corrupti? Dolor magnam molestias quam sequi quos, explicabo odio tempora veniam voluptates alias voluptatem accusantium! Omnis dolores eligendi ducimus aperiam non autem sint, vero dignissimos fugit iure consequatur tenetur reiciendis labore tempore explicabo amet ipsa suscipit nam illo deleniti? Nesciunt maxime vero ullam quisquam asperiores quod. Ut sapiente nisi cumque perspiciatis dolor. Sunt culpa optio quas corrupti incidunt dolores rerum labore nihil ipsa! Repudiandae velit, magnam cumque corrupti optio perspiciatis obcaecati assumenda iste dolorem atque reprehenderit porro magni pariatur tenetur inventore. Iusto eius doloremque culpa. Dolor, assumenda aperiam natus asperiores expedita totam sit neque molestiae, blanditiis doloremque hic culpa sapiente iusto laudantium nulla inventore ab excepturi exercitationem! Corrupti ipsam vero ipsa necessitatibus quo excepturi quis omnis, sequi corporis? Facere ut quibusdam vel eligendi quae facilis beatae quaerat magni saepe accusantium aliquid, magnam reprehenderit. Praesentium commodi, maxime officia quidem maiores dolores incidunt ab? Laudantium voluptatum optio est odio rerum esse itaque aperiam nostrum distinctio dicta aspernatur natus ratione, porro provident? Vero, facere? Laboriosam ipsum nihil qui laudantium culpa excepturi aperiam, illo neque asperiores minus pariatur eveniet, officia corporis? Sapiente labore rem quam dolor fuga eveniet impedit autem quisquam est voluptatum, distinctio excepturi repudiandae amet consequuntur recusandae sed. Reiciendis aut voluptatibus odio autem saepe, similique dolorum illo ratione maiores quo ex at culpa id expedita, suscipit repudiandae nam cumque consectetur fuga blanditiis? Excepturi ipsa nostrum cum itaque vero fugiat adipisci, repellat molestiae facere rerum accusamus quisquam, exercitationem expedita minus ut aliquid est dolorem et quam commodi dolorum reiciendis quidem ab! Nemo iure rerum dolorum nulla eveniet, non temporibus culpa, corrupti, officia impedit adipisci quam at voluptate soluta mollitia eligendi tempora incidunt. Nemo eius optio, cumque quaerat deleniti, sunt sapiente suscipit pariatur est commodi fugit dicta, facilis facere voluptatum voluptas similique distinctio ratione velit corporis qui! Saepe nemo, similique dolorum est, asperiores repudiandae recusandae voluptatibus harum iure, odio doloribus repellendus id. Maxime ipsa quis amet cum ratione sunt. Quod recusandae corporis saepe mollitia eligendi laboriosam possimus labore vitae? Illo blanditiis modi at nemo, optio voluptatibus hic. Minus explicabo molestias minima consectetur, facere tenetur beatae corporis similique, deserunt unde omnis libero eveniet! Delectus neque aliquid quas similique earum quasi odio pariatur sed rerum, commodi dolor iste ratione laborum ullam aut provident in, at voluptas magnam voluptatem quia ducimus? Ea, rerum similique facilis ullam veritatis tempore architecto necessitatibus nulla dolores consequuntur cumque ipsa! Atque, ipsa? Nisi pariatur culpa quaerat, libero autem repellendus molestiae magnam earum rem animi tempora aspernatur minima omnis, id odio facere dolorum corporis sapiente doloremque adipisci laudantium. Sed, dolorum delectus hic suscipit aperiam placeat consequatur cumque in tempore similique eum repellat nobis mollitia libero labore dignissimos culpa repellendus. Ipsum deleniti laboriosam iste sunt, et expedita odio iure. Soluta asperiores tempora officia laborum quam quidem cupiditate numquam quibusdam voluptate, qui dolore architecto? Minus vitae quisquam dolore voluptates. Architecto facere, ad doloremque ab pariatur quibusdam ipsum rerum earum laboriosam dolorum, voluptatum molestias omnis error minus molestiae eaque! Aspernatur quia alias reiciendis necessitatibus. Accusamus itaque maiores quibusdam amet nisi, aliquid praesentium eos velit dolor quis quaerat nesciunt placeat architecto voluptate possimus iure nulla quam hic ullam ipsa repellendus labore odio laborum. Sequi molestias, facere quasi necessitatibus nulla minima provident atque ea asperiores sunt maxime, blanditiis debitis autem amet aliquam reiciendis distinctio cupiditate? Optio velit, vero fuga est commodi rem.",
         "product_excerpt": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic dolores deleniti atque voluptas omnis deserunt sunt libero ex totam quasi quod optio non saepe assumenda nesciunt aliquid quaerat quo illum reprehenderit aliquam sint, ducimus inventore recusandae. Qui consequuntur nihil eveniet.",
         "weight": 7254.0,
-        "views": 496,
+        "views": 540,
         "price": "7904.00",
         "discount_price": "916.00",
         "showed_price": "6988.00",
@@ -2817,11 +2862,19 @@
     "pk": 1,
     "fields": {
         "created_at": "2023-01-31T15:58:31.659Z",
-        "updated_at": "2023-01-31T15:58:31.659Z",
+        "updated_at": "2023-02-04T02:09:03.151Z",
         "user": 5,
         "product": 63,
-        "rating": 4,
+        "rating": 1,
         "review": "This product is amazing will want to order for like fifty"
+    }
+},
+{
+    "model": "commerce.ipaddress",
+    "pk": 1,
+    "fields": {
+        "ip_address": "127.0.0.1",
+        "product_id": 63
     }
 },
 {

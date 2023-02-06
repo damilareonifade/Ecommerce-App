@@ -55,6 +55,7 @@ def review_create(request,slug):
         
         record, created = Reviews.objects.get_or_create(user=request.user,product=product.id,review=comment,rating=rating)
         if not created:
+            record.review = comment
             record.rating = rating
             record.save()
 
