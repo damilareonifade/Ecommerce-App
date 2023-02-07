@@ -4,8 +4,11 @@ from django.db.models import Count,Aggregate,Max,Sum
 from django.core.cache import cache
 from .forms import CommentForm
 import json
+from django.contrib.postgres.search import SearchQuery,SearchVector,SearchRank
 from django.http import JsonResponse
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+
+#5ADD23B7
 
 def homepage(request):
     products = Product.objects.select_related('seller', 'brand', 'product_type').annotate(highest_views=Max('views')).order_by('-highest_views')
@@ -17,6 +20,7 @@ def homepage(request):
 
 def product_detail(request,slug):
     product = Product.objects.get(uuid=slug)
+    
     product_count = product.product_reviews.count()
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
     if x_forwarded_for:
@@ -46,30 +50,31 @@ def product_detail(request,slug):
     return render(request,'store/detail.html',{'product':product,"number_of_stars":number_of_stars,'reviews':reviews})
 
 def review_create(request,slug):
-    product = Product.objects.get(uuid=slug)
-    if request.GET.get('action')  == 'post':
-        comment = str(request.GET.get('comment',None))
-        rating = str(request.GET.get('rating',None))
-        print(comment)
-        print(rating)
+    try:
+        product = Product.objects.get(uuid=slug)
+
+    except Exception as e:
+        return e
+
+    if request.method  == 'POST':
+        comment = str(request.POST.get('message',None))
         
-        record, created = Reviews.objects.get_or_create(user=request.user,product=product.id,review=comment,rating=rating)
+        record, created = Reviews.objects.get_or_create(user=request.user,product=product,review=comment)
         if not created:
             record.review = comment
-            record.rating = rating
             record.save()
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        else:
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-        review =Reviews.objects.all()
-        reviews= json.dumps(list(review))
-        plan_obj = json.loads(reviews)
-        response = JsonResponse({'reviews': plan_obj})
-        return response
 
 
 def category_product(request,slug):
     categories = Category.objects.prefetch_related('category_product').get(slug=slug)
     products = categories.category_product.all()
     paginator = Paginator(products,5)
+    search = request.GET.get('search')
+
     try:
         page = request.GET.get("page")
         objects = paginator.get_page(page)
@@ -88,3 +93,7 @@ def saved_post(request,slug):
         product.saved_post.add(request.user)
     
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+def all_saved_product(request):
+    product = Product.objects.filter(saved_post=request.user)
+    return render(request,'store/all_saved_product.html',{'product':product})

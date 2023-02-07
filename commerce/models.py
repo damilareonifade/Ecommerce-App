@@ -169,7 +169,6 @@ class Reviews(TimeStampedModel):
     review = models.TextField()
 
     class Meta:
-        unique_together = (('user','product'))
         ordering = ('-created_at',)
         verbose_name_plural = 'Reviews'
     

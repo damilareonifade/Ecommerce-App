@@ -123,10 +123,10 @@
                                     <i id="5" class="far fa-star"></i>
                                 </div>
                             </div>
-                            <form method="get">
+                            <form method="post" action="{% url 'commerce:review_create' product.uuid %}">
                                 <div class="form-group">
                                     <label for="message">Your Review *</label>
-                                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                                    <textarea id="message" cols="30" rows="5" class="form-control" name="message"></textarea>
                                 </div>
                                 {% csrf_token %}
                                 <div class="form-group mb-0">
@@ -146,35 +146,35 @@
 {% block script %}
 <script>
 
-    $(document).click("#formsubmit",function (e) {
-      const selectedRating = document.querySelector(".far fa-star.selected").id;
-      e.preventDefault();
-      $.ajax({
-        type: 'GET',
-        url: '{% url "commerce:review_create" product.uuid %}',
-        data: {
-          comment:$("#message").val(),
-          rating: selectedRating,
-          action: 'post',
-        },
-        success: function (response){
-            $("").empty();
-            $.each(response.plan,function(index,value){                    
-                var option = $('<option>');
-                option.val(value.id);
-                option.text(value.plan_description);
-                $("#planidcontainer").css("display", "block");
-                $("#plantypeid").append(option);
+    // $(document).click("#formsubmit",function (e) {
+    //   const selectedRating = document.querySelector(".far fa-star.selected").id;
+    //   e.preventDefault();
+    //   $.ajax({
+    //     type: 'GET',
+    //     url: '{% url "commerce:review_create" product.uuid %}',
+    //     data: {
+    //       comment:$("#message").val(),
+    //       rating: selectedRating,
+    //       action: 'post',
+    //     },
+    //     success: function (response){
+    //         $("").empty();
+    //         $.each(response.plan,function(index,value){                    
+    //             var option = $('<option>');
+    //             option.val(value.id);
+    //             option.text(value.plan_description);
+    //             $("#planidcontainer").css("display", "block");
+    //             $("#plantypeid").append(option);
                 
-            })
+    //         })
 
-        },
+    //     },
     
-    });
+    // });
 
-    $(document).ready(function() {
-    alert("Page Loaded");
-    });
+    // $(document).ready(function() {
+    //     console.log('Product Has been added ')
+    // });
     
 
     $(document).ready(function() {
