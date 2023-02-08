@@ -129,6 +129,9 @@ class ProductAttributeValues(models.Model):
 
     class Meta:
         unique_together = (("attributevalues", "productinventory"),)
+    
+    def __str__(self):
+        return f"{self.productinventory } - {self.attributevalues.attribute_value}"
 
 class ProductAttributeValue(models.Model):
     """
@@ -140,7 +143,7 @@ class ProductAttributeValue(models.Model):
 
 
     def __str__(self):
-        return self.attribute_value
+        return f"{self.product_attribute.name} - {self.attribute_value}"
 
 class ProductAttribute(models.Model):
     name = models.CharField(max_length=255,unique=True,null=False,blank=False,verbose_name=_("product attribute name"),help_text=_("format: required, unique, max-255"))
@@ -155,6 +158,10 @@ class ProductTypeAttribute(models.Model):
 
     class Meta:
         unique_together = (("product_attribute", "product_type"),)
+    
+    def __str__(self):
+        return f"{self.product_attribute.name} - {self.product_type.name}"
+    
 
 class Brand(TimeStampedModel):
     name = models.CharField(max_length=250)

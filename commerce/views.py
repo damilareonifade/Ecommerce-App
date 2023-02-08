@@ -71,6 +71,13 @@ def review_create(request,slug):
 
 def category_product(request,slug):
     categories = Category.objects.prefetch_related('category_product').get(slug=slug)
+    product_att_name = categories.category_product.values('attribute_values__product_attribute__name').exclude(attribute_values__product_attribute__name=None).distinct()
+    attribute_dict = {}
+    for attr_name in product_att_name:
+        data = attr_name['attribute_values_product_attribute__name']
+        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data)
+        attribute_dict[data] = attribute_values
+        
     products = categories.category_product.all()
     paginator = Paginator(products,5)
     search = request.GET.get('search')
@@ -83,7 +90,7 @@ def category_product(request,slug):
     except EmptyPage:
         objects = paginator.page(paginator.num_pages)
 
-    return render(request,'store/category_list.html',{"categories":categories,'objects':objects})
+    return render(request,'store/category_list.html',{"categories":categories,'objects':objects,'attribute_dict':attribute_dict})
 
 def saved_post(request,slug):
     product = Product.objects.get(uuid=slug)
