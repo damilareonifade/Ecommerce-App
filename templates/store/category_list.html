@@ -83,69 +83,26 @@
                     {% endfor %} -->
                     
                     <!-- Color Start -->
+                    {% for attr_name, attribute_values in attribute_dict.items %}
                     <div class="border-bottom mb-4 pb-4">
-                        <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
+                        <h5 class="font-weight-semi-bold mb-4">Filter by {{ attr_name }}</h5>
                         <form>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" checked id="color-all">
-                                <label class="custom-control-label" for="price-all">All Color</label>
+                                <label class="custom-control-label" for="price-all">All {{ attr_name }}</label>
                                 <span class="badge border font-weight-normal">1000</span>
                             </div>
+                            {% for attribute_value in attribute_values %}
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="color-1">
-                                <label class="custom-control-label" for="color-1">Black</label> 
+                                <input type="checkbox" class="custom-control-input">
+                                <label class="custom-control-label" for="color-1">{{ attribute_value.attribute_value }}</label>
+                                <span class="badge border font-weight-normal">{{attribute_value.product_count}}</span>
+                                
                             </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="color-2">
-                                <label class="custom-control-label" for="color-2">White</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="color-3">
-                                <label class="custom-control-label" for="color-3">Red</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="color-4">
-                                <label class="custom-control-label" for="color-4">Blue</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                <input type="checkbox" class="custom-control-input" id="color-5">
-                                <label class="custom-control-label" for="color-5">Green</label>
-                            </div>
+                            {% endfor %}                            
                         </form>
                     </div>
-                    <!-- Color End -->
-    
-                    <!-- Size Start -->
-                    <div class="mb-5">
-                        <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                        <form>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" checked id="size-all">
-                                <label class="custom-control-label" for="size-all">All Size</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="size-1">
-                                <label class="custom-control-label" for="size-1">XS</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="size-2">
-                                <label class="custom-control-label" for="size-2">S</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="size-3">
-                                <label class="custom-control-label" for="size-3">M</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="size-4">
-                                <label class="custom-control-label" for="size-4">L</label>
-                            </div>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                <input type="checkbox" class="custom-control-input" id="size-5">
-                                <label class="custom-control-label" for="size-5">XL</label>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Size End -->
+                    {% endfor %}                    
                 </div>
                 <!-- Shop Sidebar End -->
             {% for product in objects %}

@@ -74,9 +74,11 @@ def category_product(request,slug):
     product_att_name = categories.category_product.values('attribute_values__product_attribute__name').exclude(attribute_values__product_attribute__name=None).distinct()
     attribute_dict = {}
     for attr_name in product_att_name:
-        data = attr_name['attribute_values_product_attribute__name']
-        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data)
-        attribute_dict[data] = attribute_values
+        data = attr_name['attribute_values__product_attribute__name']
+        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data).prefetch_related('attributevaluess')
+        for attr_value in attribute_values:
+            product_count = attr_value.attributevaluess.count()
+            attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value, 'product_count': product_count})
         
     products = categories.category_product.all()
     paginator = Paginator(products,5)
@@ -90,7 +92,7 @@ def category_product(request,slug):
     except EmptyPage:
         objects = paginator.page(paginator.num_pages)
 
-    return render(request,'store/category_list.html',{"categories":categories,'objects':objects,'attribute_dict':attribute_dict})
+    return render(request,'store/category_list.html',{"categories":categories,'objects':objects,"product_count":product_count,'attribute_dict':attribute_dict})
 
 def saved_post(request,slug):
     product = Product.objects.get(uuid=slug)
