@@ -71,6 +71,7 @@ def review_create(request,slug):
 
 def category_product(request,slug):
     categories = Category.objects.prefetch_related('category_product').get(slug=slug)
+
     product_att_name = categories.category_product.values('attribute_values__product_attribute__name').exclude(attribute_values__product_attribute__name=None).distinct()
     attribute_dict = {}
     for attr_name in product_att_name:
@@ -79,11 +80,15 @@ def category_product(request,slug):
         for attr_value in attribute_values:
             product_count = attr_value.attributevaluess.count()
             attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value, 'product_count': product_count})
-        
-    products = categories.category_product.all()
-    paginator = Paginator(products,5)
-    search = request.GET.get('search')
-
+    if 'search_product' in request.GET:
+        search = request.GET.get('search_product',None)
+        query= SearchQuery(search)
+        vector = SearchVector("name",weight='A')+ SearchVector("product_description",weight='A') + SearchVector('brand',weight='B') + SearchVector('seller',weight='C')
+        products = categories.category_product.annotate(rank=SearchRank(vector,query)).order_by("-rank",)
+    else:
+        products = categories.category_product.all()
+       
+    paginator = Paginator(products,20)
     try:
         page = request.GET.get("page")
         objects = paginator.get_page(page)

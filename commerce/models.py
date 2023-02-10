@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 import uuid
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+from django.contrib.postgres.indexes import GinIndex
 
 
 
@@ -47,8 +48,9 @@ class Category(MPTTModel):
 
 class Product(TimeStampedModel):
     uuid =models.UUIDField(default=uuid.uuid4, editable=False)
+    sku = models.CharField(verbose_name='Product Store Number',null=True,blank=True,max_length=250)
     category = models.ManyToManyField(Category,related_name='category_product')
-    name = models.CharField(verbose_name='Product Name',max_length=250,null=False,blank=False)
+    name = models.CharField(verbose_name='Product Name',max_length=250,null=False,blank=False,db_index=True)
     seller = models.ForeignKey(User,on_delete=models.SET_NULL,blank=True,null=True)
     brand = models.ForeignKey("Brand",on_delete=models.CASCADE,related_name='product_brand')
     product_type = models.ForeignKey("ProductType",on_delete=models.CASCADE,related_name='product_type')
@@ -64,6 +66,9 @@ class Product(TimeStampedModel):
         
 
     class Meta:
+        indexes = [
+            GinIndex(name='NewGinIndex',fields=['name'])
+        ]
         ordering = ('-created_at',)
         verbose_name = "Product"
         verbose_name_plural = "Products"
