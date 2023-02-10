@@ -111,3 +111,24 @@ def saved_post(request,slug):
 def all_saved_product(request):
     product = Product.objects.filter(saved_post=request.user)
     return render(request,'store/all_saved_product.html',{'product':product})
+
+
+def product_search(request):
+    try:
+        if 'search' in request.GET:
+            search = request.GET.get("search",None)
+            query = SearchQuery(search)
+            product = Product.objects.annotate(search=SearchVector('sku','name','product_description','seller','brand')).filter(search=query)
+            
+            paginator = Paginator(product,20)
+            try:
+                page = request.GET.get("page")
+                objects = paginator.get_page(page)
+            except PageNotAnInteger:
+                objects = paginator.page(1)
+            except EmptyPage:
+                objects = paginator.page(paginator.num_pages)
+    except:
+        objects ='There is no product or brand with such name '
+
+    return render(request,'store/product_search.html',{'objects':objects})

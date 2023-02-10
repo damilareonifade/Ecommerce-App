@@ -87,7 +87,7 @@
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <form action="{% url 'commerce:category_product' categories.slug %}" method="get">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="search_product" placeholder="Search by Product Name">
+                                        <input type="text" class="form-control" name="search_product" placeholder="Search Products in {{ categories.name}}">
                                         <div class="input-group-append">
                                             <button type="submit"><span class="input-group-text bg-transparent text-primary">
                                                 <i class="fa fa-search"></i>
