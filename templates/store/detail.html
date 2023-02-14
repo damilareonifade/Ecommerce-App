@@ -168,44 +168,29 @@
 {% block script %}
 <script>
 
-    // $(document).click("#formsubmit",function (e) {
-    //   const selectedRating = document.querySelector(".far fa-star.selected").id;
-    //   e.preventDefault();
-    //   $.ajax({
-    //     type: 'GET',
-    //     url: '{% url "commerce:review_create" product.uuid %}',
-    //     data: {
-    //       comment:$("#message").val(),
-    //       rating: selectedRating,
-    //       action: 'post',
-    //     },
-    //     success: function (response){
-    //         $("").empty();
-    //         $.each(response.plan,function(index,value){                    
-    //             var option = $('<option>');
-    //             option.val(value.id);
-    //             option.text(value.plan_description);
-    //             $("#planidcontainer").css("display", "block");
-    //             $("#plantypeid").append(option);
-                
-    //         })
-
-    //     },
-    
-    // });
-
-    // $(document).ready(function() {
-    //     console.log('Product Has been added ')
-    // });
-    
-
-    $(document).ready(function() {
-    $('.far fa-star').click(function() {
-        $(this).prevAll().removeClass('far').addClass('fas');
-        $(this).removeClass('far').addClass('fas');
-        $(this).nextAll().removeClass('fas').addClass('far');
+$(document).click("#formsubmit", function(e) {
+    const selectedRating = document.querySelector(".far fa-star.selected").id;
+    e.preventDefault();
+    $.ajax({
+        type: 'GET',
+        url: '{% url "commerce:review_create" product.uuid %}',
+        data: {
+            comment: $("#message").val(),
+            rating: selectedRating,
+            action: 'post',
+        },
+        success: function(response) {
+            $("").empty();
+            $.each(response.plan, function(index, value) {
+                var option = $('<option>');
+                option.val(value.id);
+                option.text(value.plan_description);
+                $("#planidcontainer").css("display", "block");
+                $("#plantypeid").append(option);
+            })
+        }
     });
-    });
+});
 
-</script>
+</scripts>
 {% endblock %}
