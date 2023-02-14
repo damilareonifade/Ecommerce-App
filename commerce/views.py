@@ -20,7 +20,6 @@ def homepage(request):
 
 def product_detail(request,slug):
     product = Product.objects.get(uuid=slug)
-    
     product_count = product.product_reviews.count()
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
     if x_forwarded_for:
@@ -32,8 +31,18 @@ def product_detail(request,slug):
     if created:
         product.views += 1
         product.save()
-
     reviews= Reviews.objects.all()
+    
+    #code to get the product attribute of the product here
+    product_att_name = Product.objects.filter(uuid=slug).values('attribute_values__product_attribute__name').exclude(attribute_values__product_attribute__name=None).distinct()
+    attribute_dict = {}
+    for attr_name in product_att_name:
+        data = attr_name['attribute_values__product_attribute__name']
+        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data).prefetch_related('attributevaluess')
+        for attr_value in attribute_values:
+            product_count = attr_value.attributevaluess.count()
+            attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value})
+
 
     if product_count <= 19:
         number_of_stars = range(1)
@@ -47,7 +56,7 @@ def product_detail(request,slug):
         number_of_stars =range(5)
        
     
-    return render(request,'store/detail.html',{'product':product,"number_of_stars":number_of_stars,'reviews':reviews})
+    return render(request,'store/detail.html',{'product':product,"number_of_stars":number_of_stars,'reviews':reviews,'attribute_dict':attribute_dict})
 
 def review_create(request,slug):
     try:
@@ -80,6 +89,8 @@ def category_product(request,slug):
         for attr_value in attribute_values:
             product_count = attr_value.attributevaluess.count()
             attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value, 'product_count': product_count})
+
+    #search functionality
     if 'search_product' in request.GET:
         search = request.GET.get('search_product',None)
         query= SearchQuery(search)
@@ -129,6 +140,6 @@ def product_search(request):
             except EmptyPage:
                 objects = paginator.page(paginator.num_pages)
     except:
-        objects ='There is no product or brand with such name '
+        objects ='There is no product or brand with such name'
 
     return render(request,'store/product_search.html',{'objects':objects})
