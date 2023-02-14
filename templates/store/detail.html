@@ -1,6 +1,6 @@
 <!-- Mr Paul Password WPfav2vVWP -->
 {% extends "../base/base.html" %}
-
+{% load social_share %}
 
 {% block content %}
 
@@ -180,16 +180,12 @@ $(document).click("#formsubmit", function(e) {
             action: 'post',
         },
         success: function(response) {
-            $("").empty();
-            $.each(response.plan, function(index, value) {
-                var option = $('<option>');
-                option.val(value.id);
-                option.text(value.plan_description);
-                $("#planidcontainer").css("display", "block");
-                $("#plantypeid").append(option);
-            })
         }
     });
+});
+
+$(document).ready(function(){
+  alert("You are welcome");
 });
 
 </scripts>
