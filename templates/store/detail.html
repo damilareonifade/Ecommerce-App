@@ -56,6 +56,7 @@
                 <div class="d-flex mb-3">
                     <p class="text-dark font-weight-medium mb-0 mr-3">{{ attr_name }}:</p>
                     <form>
+                        {% csrf_token %}
                         {% for attribute_value in attribute_values %}
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" class="custom-control-input" id="{{ attribute_value.attribute_value }}-{{ forloop.counter }}" name="size">
@@ -72,14 +73,15 @@
                             <i class="fa fa-minus"></i>
                             </button>
                         </div>
-                        <input type="text" class="form-control bg-secondary text-center" value="1">
+                        <input type="text" class="form-control bg-secondary text-center" id="qty" value="1">
                         <div class="input-group-btn">
                             <button class="btn btn-primary btn-plus">
                                 <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-primary px-3""><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+    
                 </div>
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -163,30 +165,26 @@
     </div>
 </div>
 
-{% endblock %}
 
-{% block script %}
+
 <script>
-
-$(document).click("#formsubmit", function(e) {
-    const selectedRating = document.querySelector(".far fa-star.selected").id;
+$(document).on("click","#add-button", function(e) {
+    s = $('#qty').val()
+    console.log(s)
     e.preventDefault();
     $.ajax({
-        type: 'GET',
-        url: '{% url "commerce:review_create" product.uuid %}',
+        type: 'POST',
+        url: '{% url "basket:basket_add" %}',
         data: {
-            comment: $("#message").val(),
-            rating: selectedRating,
+            productid:"{{product.id}}",
+            qty:$('#qty').val(),
+            csrfmiddlewaretoken:"{{csrf_token}}",                       
             action: 'post',
         },
         success: function(response) {
+            document.getElementById("basket-qty").innerHTML = response.qty
         }
     });
 });
-
-$(document).ready(function(){
-  alert("You are welcome");
-});
-
-</scripts>
+</script>
 {% endblock %}

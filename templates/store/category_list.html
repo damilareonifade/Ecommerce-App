@@ -201,4 +201,22 @@
     </div>
     
 
+<script>
+    $(document).on("click","#add-button", function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: '{% url "basket:basket_add" %}',
+            data: {
+                productid:"{{product.id}}",
+                qty:$('#qty').val(),
+                csrfmiddlewaretoken:"{{csrf_token}}",                       
+                action: 'post',
+            },
+            success: function(response) {
+                document.getElementById("basket-qty").innerHTML = response.qty
+            }
+        });
+    });
+</script>
 {% endblock %}
