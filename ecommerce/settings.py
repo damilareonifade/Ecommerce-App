@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'mptt',
+    'cart',
+    'django_social_share',
     
 ]
 
@@ -144,7 +146,7 @@ CLOUDINARY_STORAGE = {
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
+CART_ID = 'cart'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
