@@ -11,4 +11,5 @@ urlpatterns = [
     path('saved-post/<slug:slug>/',views.saved_post,name='saved_post'),
     path('all-saved-product/',views.all_saved_product,name='all_saved_product'),
     path('search/',views.product_search,name='product_search'),
+    path('cat/<slug:slug>/',views.category_ajax_view,name='category_ajax'),
 ]

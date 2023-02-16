@@ -89,13 +89,19 @@ def category_product(request,slug):
         for attr_value in attribute_values:
             product_count = attr_value.attributevaluess.count()
             attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value, 'product_count': product_count})
-
+    
     #search functionality
     if 'search_product' in request.GET:
         search = request.GET.get('search_product',None)
         query= SearchQuery(search)
         vector = SearchVector("name",weight='A')+ SearchVector("product_description",weight='A') + SearchVector('brand',weight='B') + SearchVector('seller',weight='C')
         products = categories.category_product.annotate(rank=SearchRank(vector,query)).order_by("-rank",)
+    
+    elif 'latest' in request.GET:
+        products = categories.category_product.all().order_by('-created_at',)
+    
+    elif 'popularity' in request.GET:
+        products = categories.category_product.all().order_by('-views',)
     else:
         products = categories.category_product.all()
        
@@ -143,3 +149,17 @@ def product_search(request):
         objects ='There is no product or brand with such name'
 
     return render(request,'store/product_search.html',{'objects':objects})
+
+def category_ajax_view(request,slug):
+    categories = Category.objects.get(slug=slug)
+    if request.GET.get('action') == 'post':
+        values = request.GET.getlist('values[]',None)
+        product = categories.category_product.filter(attribute_values__attribute_value__in=values).distinct()
+        paginator = Paginator(product,20)
+        try:
+            page = request.GET.get("page")
+            objects = paginator.get_page(page)
+        except PageNotAnInteger:
+            objects = paginator.page(1)
+        except EmptyPage:
+            objects = paginator.page(paginator.num_pages)

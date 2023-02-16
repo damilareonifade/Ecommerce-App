@@ -88,7 +88,7 @@
                 {% if request.user.is_authenticated %}
                 <a href="{% url 'commerce:all_saved_product' %}" class="btn border">
                     <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">{{ product_count }}</span>
+                    <span class="badge">{{ product_number }}</span>
                 </a>
                 {% endif %}
                 <a href="" class="btn border">

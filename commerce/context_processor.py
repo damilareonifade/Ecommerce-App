@@ -8,4 +8,4 @@ def category_list(request):
 def saved_post_count(request):
     user = request.user
     product = Product.objects.filter(saved_post=request.user).count()
-    return {'product_count':product}
+    return {'product_number':product}
