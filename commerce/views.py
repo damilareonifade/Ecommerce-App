@@ -85,7 +85,7 @@ def category_product(request,slug):
     attribute_dict = {}
     for attr_name in product_att_name:
         data = attr_name['attribute_values__product_attribute__name']
-        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data).prefetch_related('attributevaluess')
+        attribute_values = ProductAttributeValue.objects.filter(product_attribute__name=data).prefetch_related('attributevaluess').distinct()
         for attr_value in attribute_values:
             product_count = attr_value.attributevaluess.count()
             attribute_dict.setdefault(data, []).append({'attribute_value': attr_value.attribute_value, 'product_count': product_count})
@@ -153,7 +153,7 @@ def product_search(request):
 def category_ajax_view(request,slug):
     categories = Category.objects.get(slug=slug)
     if request.GET.get('action') == 'post':
-        values = request.GET.getlist('values[]',None)
+        values = request.GET.getlist('values',None)
         product = categories.category_product.filter(attribute_values__attribute_value__in=values).distinct()
         paginator = Paginator(product,20)
         try:
@@ -163,3 +163,7 @@ def category_ajax_view(request,slug):
             objects = paginator.page(1)
         except EmptyPage:
             objects = paginator.page(paginator.num_pages)
+        print(objects)
+
+        response = JsonResponse({'objects':objects})
+    return response

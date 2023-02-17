@@ -28,7 +28,7 @@
                         <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
                         <form>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" checked id="price-all">
+                                <input type="checkbox" class="custom-control-input"  id="price-all">
                                 <label class="custom-control-label" for="price-all">All Price</label>
                                 <span class="badge border font-weight-normal">1000</span>
                             </div>
@@ -64,8 +64,8 @@
                         <h5 class="font-weight-semi-bold mb-4">Filter by {{ attr_name }}</h5>
                         <form>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" checked id="color-all">
-                                <label class="custom-control-label" for="price-all">All {{ attr_name }}</label>
+                                <input type="checkbox" class="custom-control-input"  id="color-all">
+                                <label class="custom-control-label" for="{{attr_name}}-all">All {{ attr_name }}</label>
                                 <span class="badge border font-weight-normal"></span>
                             </div>
                             {% for attribute_value in attribute_values %}
@@ -201,21 +201,32 @@
     
 
 <script>
-$('#filter-form input[type=checkbox]').on('click', function(event) {
-  event.preventDefault();
-  var checkedBoxes = $('input[type=checkbox]:checked');
-  var values = checkedBoxes.map(function() {
-    return $(this).val();
-  }).get();
-  console.log(values)
-  sendAjaxRequest(values);
+
+$(document).ready(function() {
+  $('.custom-control-input').on('change', function() {
+    if (this.checked) {
+      var labelFor = $(this).attr('id');
+      var label = $('label[for="' + labelFor + '"]').text();
+      sendAjaxRequest(label)
+    }
+  });
 });
-function sendAjaxRequest(values){
+// $('#filter-form input[type=checkbox]').on('change', function(event) {
+//   event.preventDefault();
+//   var checkedBoxes = $('input[type=checkbox]:checked');
+//   console.log(checkedBoxes)
+//   var values = checkedBoxes.map(function() {
+//     return $(this).val();
+//   }).get();
+//   console.log(values)
+//   sendAjaxRequest(values);
+// });
+function sendAjaxRequest(label){
     $.ajax({
     url: '{% url "commerce:category_ajax" categories.slug %}',
     type: 'GET',
     data: {
-        values: values
+        values: label
     },
     success: function(data) {
       $('#results-container').html(data);
