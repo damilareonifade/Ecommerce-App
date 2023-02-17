@@ -232,7 +232,7 @@ function sendAjaxRequest(label){
     },
     success: function(response) {
       console.log(response['objects'])
-      var products = response.response;
+      var products = response.objects;
       var container = document.getElementById('product-container');
       container.innerHTML = "";
       for (var i = 0; i < products.length; i++) {

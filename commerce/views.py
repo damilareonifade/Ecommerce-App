@@ -154,7 +154,7 @@ def category_ajax_view(request,slug):
     categories = Category.objects.get(slug=slug)
     if request.GET.get('action') == 'post':
         values = request.GET.get('values',None)
-        product = categories.category_product.filter(attribute_values__attribute_value__in=values).distinct()
+        product = categories.category_product.filter(attribute_values__attribute_value=values).distinct()
         paginator = Paginator(product,20)
         try:
             page = request.GET.get("page")
@@ -163,6 +163,6 @@ def category_ajax_view(request,slug):
             objects = paginator.page(1)
         except EmptyPage:
             objects = paginator.page(paginator.num_pages)
-        response = JsonResponse({'objects':objects})
+        response = JsonResponse({'objects':paginator})
         return response
     return HttpResponse("here are we")
