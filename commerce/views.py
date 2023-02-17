@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,HttpResponseRedirect
+from django.shortcuts import render,get_object_or_404,HttpResponseRedirect,HttpResponse
 from .models import *
 from django.db.models import Count,Aggregate,Max,Sum
 from django.core.cache import cache
@@ -153,7 +153,7 @@ def product_search(request):
 def category_ajax_view(request,slug):
     categories = Category.objects.get(slug=slug)
     if request.GET.get('action') == 'post':
-        values = request.GET.getlist('values',None)
+        values = request.GET.get('values',None)
         product = categories.category_product.filter(attribute_values__attribute_value__in=values).distinct()
         paginator = Paginator(product,20)
         try:
@@ -163,7 +163,6 @@ def category_ajax_view(request,slug):
             objects = paginator.page(1)
         except EmptyPage:
             objects = paginator.page(paginator.num_pages)
-        print(objects)
-
         response = JsonResponse({'objects':objects})
-    return response
+        return response
+    return HttpResponse("here are we")
