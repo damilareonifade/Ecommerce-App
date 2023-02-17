@@ -107,8 +107,9 @@
                                 </div>
                             </div>
                         </div>
+            <div class="" id="product-container">
             {% for product in objects %}
-            <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+            <div class="col-lg-4 col-md-6 col-sm-12 pb-1" >
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                         <img class="img-fluid w-100" src="{{ product.image.url }}" alt="">
@@ -127,6 +128,7 @@
                 </div>
             </div>
             {% endfor %}
+          </div>
         </div>
         <div class="pagination-container">
         <nav aria-label="Page navigation example"  class="text-center">
@@ -228,8 +230,34 @@ function sendAjaxRequest(label){
     data: {
         values: label
     },
-    success: function(data) {
-      $('#results-container').html(data);
+    success: function(response) {
+      console.log(response['objects'])
+      var products = response.response;
+      var container = document.getElementById('product-container');
+      container.innerHTML = "";
+      for (var i = 0; i < products.length; i++) {
+            var product = products[i];
+            var productHTML = "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>" +
+                "<div class='card product-item border-0 mb-4'>" +
+                "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>" +
+                "<img class='img-fluid w-100' src='" + product.image_url + "' alt=''>" +
+                "</div>" +
+                "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>" +
+                "<h6 class='text-truncate mb-3'>" + product.name + "</h6>" +
+                "<div class='d-flex justify-content-center'>" +
+                "<h6>₦" + product.showed_price + "</h6><h6 class='text-muted ml-2'><del>" + product.price + "</del></h6>" +
+                "</div>" +
+                "</div>" +
+                "<div class='card-footer d-flex justify-content-between bg-light border'>" +
+                "<a href='" + product.details_url + "' class='btn btn-sm text-dark p-0'><i class='fas fa-eye text-primary mr-1'></i>View Detail</a>" +
+                "<a href='" + product.saved_post_url + "' class='btn btn-sm text-dark p-0 text-center'><i class='fas fa-shopping-cart text-primary mr-1'></i>Saved Product</a>" +
+                "<a href='' class='btn btn-sm text-dark p-0'><i class='fas fa-shopping-cart text-primary mr-1'></i>Add To Cart</a>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+            container.innerHTML += productHTML;
+        }
+
     },
     error: function() {
       alert('Error loading data.');
@@ -237,6 +265,37 @@ function sendAjaxRequest(label){
     });
 }
 
-
+// $.ajax({
+//     url: your_url, // your view URL
+//     data: your_data, // your data to be sent
+//     type: 'get',
+//     success: function (data) {
+//         var products = data.objects; // assuming the response object has an 'objects' property containing an array of products
+//         var container = document.getElementById("product-container");
+//         container.innerHTML = ""; // clear any existing products in the container
+//         for (var i = 0; i < products.length; i++) {
+//             var product = products[i];
+//             var productHTML = "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>" +
+//                 "<div class='card product-item border-0 mb-4'>" +
+//                 "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>" +
+//                 "<img class='img-fluid w-100' src='" + product.image_url + "' alt=''>" +
+//                 "</div>" +
+//                 "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>" +
+//                 "<h6 class='text-truncate mb-3'>" + product.name + "</h6>" +
+//                 "<div class='d-flex justify-content-center'>" +
+//                 "<h6>₦" + product.showed_price + "</h6><h6 class='text-muted ml-2'><del>" + product.price + "</del></h6>" +
+//                 "</div>" +
+//                 "</div>" +
+//                 "<div class='card-footer d-flex justify-content-between bg-light border'>" +
+//                 "<a href='" + product.details_url + "' class='btn btn-sm text-dark p-0'><i class='fas fa-eye text-primary mr-1'></i>View Detail</a>" +
+//                 "<a href='" + product.saved_post_url + "' class='btn btn-sm text-dark p-0 text-center'><i class='fas fa-shopping-cart text-primary mr-1'></i>Saved Product</a>" +
+//                 "<a href='' class='btn btn-sm text-dark p-0'><i class='fas fa-shopping-cart text-primary mr-1'></i>Add To Cart</a>" +
+//                 "</div>" +
+//                 "</div>" +
+//                 "</div>";
+//             container.innerHTML += productHTML;
+//         }
+//     }
+// });
 </script>
 {% endblock %}
