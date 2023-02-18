@@ -93,7 +93,15 @@
                 {% endif %}
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge" id="basket-qty">0</span>
+                    <span class="badge" id="basket-qty">
+                        {% with total_qty=basket|length %}
+                        {% if total_qty > 0 %}
+                        {{ total_qty }}
+                        {% else %}
+                            0
+                        {% endif %}
+                        {% endwith %}
+                    </span>
                 </a>
             </div>
         </div>

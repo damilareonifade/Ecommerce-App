@@ -163,6 +163,7 @@ def category_ajax_view(request,slug):
             objects = paginator.page(1)
         except EmptyPage:
             objects = paginator.page(paginator.num_pages)
-        response = JsonResponse({'objects':paginator})
+        product_list = list(product.values('id',"uuid",'name', 'price','showed_price'))
+        response = JsonResponse({'objects':product_list})
         return response
     return HttpResponse("here are we")

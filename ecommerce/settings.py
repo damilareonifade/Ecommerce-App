@@ -60,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'commerce.context_processor.category_list',
                 'commerce.context_processor.saved_post_count',
+                'cart.context_processor.basket',
             ],
         },
     },

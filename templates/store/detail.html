@@ -182,6 +182,7 @@ $(document).on("click","#add-button", function(e) {
             action: 'post',
         },
         success: function(response) {
+            console.log(response['qty'])
             document.getElementById("basket-qty").innerHTML = response.qty
         }
     });
