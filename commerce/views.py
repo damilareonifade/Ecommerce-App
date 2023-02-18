@@ -31,7 +31,7 @@ def product_detail(request,slug):
     if created:
         product.views += 1
         product.save()
-    reviews= Reviews.objects.all()
+    reviews= Reviews.objects.filter(product=product)
     
     #code to get the product attribute of the product here
     product_att_name = Product.objects.filter(uuid=slug).values('attribute_values__product_attribute__name').exclude(attribute_values__product_attribute__name=None).distinct()

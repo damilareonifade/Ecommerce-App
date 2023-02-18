@@ -20,9 +20,8 @@ services:
     volumes:
       - .:/usr/src/app/
       - static:/usr/src/app/staticfiles
-    restart: always
-    expose:
-      - 8000
+    ports:
+      - 8000:8000
     environment:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
@@ -30,15 +29,15 @@ services:
     depends_on:
       - db
 
-  nginx:
-    build: 
-      context: ./nginx/
-    container_name: ecommerce-nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-      - static:/home/app/staticfiles/
+#   nginx:
+#     build: 
+#       context: ./nginx/
+#     container_name: ecommerce-nginx
+#     ports:
+#       - 80:80
+#     volumes:
+#       - ./nginx/conf.d/:/etc/nginx/conf.d/
+#       - static:/home/app/staticfiles/
 
 volumes:
   static:

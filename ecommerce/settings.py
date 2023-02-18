@@ -60,7 +60,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'commerce.context_processor.category_list',
                 'commerce.context_processor.saved_post_count',
-                'cart.context_processor.basket',
             ],
         },
     },
@@ -78,7 +77,7 @@ DATABASES = {
         "NAME": "postgres",
         'USER': "postgres",
         "PASSWORD": "postgres",
-        'HOST': 'db',
+        'HOST': '',
         'PORT': "5432",
     }
 }
