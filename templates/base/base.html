@@ -91,7 +91,7 @@
                     <span class="badge">{{ product_number }}</span>
                 </a>
                 {% endif %}
-                <a href="" class="btn border">
+                <a href="{% url 'basket:basket_all' %}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge" id="basket-qty">
                         {% with total_qty=basket|length %}
@@ -176,7 +176,7 @@
     </div>
     {% block content %}
 
-    {%  endblock %}
+    {% endblock %}
     <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -245,6 +245,7 @@
         </div>
     </div>
     <!-- Footer End -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
     {% block scripts %}
     {% endblock %}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
@@ -256,9 +257,5 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'js/main.js' %}"></script>
-    {% block script %}
-
-    {% endblock %}
-   
 </body>
 </html>

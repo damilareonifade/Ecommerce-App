@@ -17,3 +17,7 @@ def basket_add(request):
         response = JsonResponse({'qty':basketqty})
         return response
 
+
+def basket_all(request):
+    basket = Basket(request)
+    return render(request, 'basket/summary.html', {'basket':basket})

@@ -1,0 +1,115 @@
+{% extends '../base/base.html' %}
+
+{% block content %}
+<!-- Coupon Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-secondary text-dark">
+                    <tr>
+                        <th>Products</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                {% if basket|length == 0 %}
+                <div class="col-12">Your basket is empty <a href="{% url 'commerce:index' %}">Shop</a></div>
+                {% else %}
+                <tbody class="align-middle">
+                    {% for item in basket %}
+                    {% with product=item.product %}
+                    <tr>
+                        {% for image in product.product_image.all %}
+                        {% if image.is_feature%}
+                        <td class="align-middle"><img src="{{image.image.url}}" alt="" style="width: 50px;"> {{product.name}}</td>
+                        {% endif %}
+                        {% endfor %}                        
+                        <td class="align-middle">₦{{product.price}}</td>
+                        <td class="align-middle">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-minus" >
+                                    <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{item.qty}}">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        {% endwith %}
+                        <td class="align-middle">₦{{ item.total_price }}</td>
+                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                    </tr>
+                </tbody>                
+                {% endfor %}
+                {% endif %}
+            </table>
+            </div>
+            <div class="col-lg-4">
+                <form class="mb-5" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary">Apply Coupon</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Subtotal</h6>
+                            <h6 class="font-weight-medium">₦{{basket.get_subtotal_price}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">$0.00</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">Select Address And Location</h5>
+                        </div>
+                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+    
+
+<script>
+$(document).on("click","#add-button", function(e) {
+        s = $('#qty').val()
+        console.log(s)
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "basket:basket_add" %}',
+            data: {
+                productid:"{{product.id}}",
+                qty:$('#qty').val(),
+                csrfmiddlewaretoken:"{{csrf_token}}",                       
+                action: 'post',
+            },
+            success: function(response) {
+                console.log(response['qty'])
+                document.getElementById("basket-qty").innerHTML = response.qty
+            }
+        });
+    }); 
+</script>
+                
+{% endblock %}

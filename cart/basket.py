@@ -21,7 +21,7 @@ class Basket():
         
         self.save()
 
-    def __iter__(self,request):
+    def __iter__(self):
         product_ids = self.basket.keys()
         products = Product.objects.filter(id__in = product_ids)
 
@@ -32,14 +32,18 @@ class Basket():
 
         for item in basket.values():
             item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['qty']
+            item['total_price'] = item['price'] * int(item['qty'])
             yield item
     
     def __len__(self):
         return sum(int(item["qty"]) for item in self.basket.values())
     
     def get_subtotal_price(self):
-        return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+        return sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
+    
+    def get_total_price(self):
+        pass
+
 
     def update(self, product, qty):
         """
