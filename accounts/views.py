@@ -76,6 +76,9 @@ def address(request):
 def edit_address(request,address_id):
     pass
 
+@login_required
+def add_adress(request):
+    pass
 
 @login_required
 def delete_address(request,address_id):
@@ -85,6 +88,10 @@ def delete_address(request,address_id):
 
 @login_required
 def set_default(request,address_id):
-    address = AddressGlobal.objects.filter()
+    address = AddressGlobal.objects.filter(user=request.user,is_default=True)
+    address.is_default = False
+    new_address = AddressGlobal.objects.get(id=address_id)
+    new_address.is_default=True
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
