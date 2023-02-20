@@ -74,10 +74,12 @@ class UserProfile(models.Model):
 
 
 class AddressGlobal(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     address = models.TextField()
     city = models.CharField(max_length=250)
     state = models.CharField(max_length=250)
     country = models.CharField(max_length=100)
+    is_default = models.BooleanField(default=False)
 
     def __str__(self):
         return self.city

@@ -21,3 +21,6 @@ class RegistrationForm(forms.ModelForm):
         password2 = cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
+
+
+# class AddressForm()
