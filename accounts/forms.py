@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-
+from .models import AddressGlobal
 
 User = get_user_model()
 
@@ -23,4 +23,12 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError("Passwords don't match")
 
 
-# class AddressForm()
+class AddressForm(forms.ModelForm):
+    class Meta:
+        model = AddressGlobal
+        fields = ("address",'city','state')
+
+class AddressEditForm(forms.ModelForm):
+    class Meta:
+        model = AddressGlobal
+        fields = ('address','city','state')

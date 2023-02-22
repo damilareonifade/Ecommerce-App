@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'mptt',
     'cart',
+    'seller',
     'django_social_share',
+    
     
 ]
 

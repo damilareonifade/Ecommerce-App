@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from datetime import datetime
 
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self,email,password,**extra_fields):
         if not email:
@@ -45,7 +46,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     is_staff= models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_seller = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
 
     USERNAME_FIELD = 'email'
@@ -59,6 +61,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 def create_user_profile(sender,instance,created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance).save()
+    
+    
         
 
 
@@ -77,13 +81,21 @@ class AddressGlobal(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     address = models.TextField()
     city = models.CharField(max_length=250)
-    state = models.CharField(max_length=250)
-    country = models.CharField(max_length=100)
+    state = models.ForeignKey("State",null=True,blank=True,on_delete=models.CASCADE)
+    country = models.CharField(max_length=100,default='Nigeria')
     is_default = models.BooleanField(default=False)
 
     def __str__(self):
         return self.city
 
+class State(models.Model):
+    name = models.CharField(max_length=72,unique=True)
+    price = models.CharField(max_length=250,null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 class UserActivity(models.Model):
     user = models.ForeignKey(CustomUser,related_name='custom_user',null=True,on_delete=models.SET_NULL)
@@ -101,5 +113,4 @@ class UserActivity(models.Model):
     
 def create_user_activity(user,option):
     UserActivity.objects.create(user=user,email=user.email,full_name=user.name,option=option)
-
 

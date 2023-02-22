@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.urls import reverse
-from .forms import RegistrationForm
+from .forms import RegistrationForm,AddressEditForm,AddressForm
 from .models import create_user_activity,UserProfile,AddressGlobal
 from .tasks import send_registration_email
 from django.db import transaction
@@ -74,24 +74,40 @@ def address(request):
 
 @login_required
 def edit_address(request,address_id):
-    pass
+    if request.method == 'POST':
+        address = AddressGlobal.objects.filter(id=address_id,user=request.user)
+        form = AddressEditForm(instace=address,data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("accounts:address"))
+    else:
+        return HttpResponseRedirect(reverse("accounts:address"))
 
 @login_required
-def add_adress(request):
-    pass
+def add_address(request):
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return HttpResponseRedirect(reverse('accounts:address'))
+
 
 @login_required
 def delete_address(request,address_id):
     address = AddressGlobal.objects.get(id=address_id).delete()
-    return HttpResponseRedirect()
-    pass
+    return HttpResponseRedirect(reverse('accounts:address'))
+    
 
 @login_required
 def set_default(request,address_id):
     address = AddressGlobal.objects.filter(user=request.user,is_default=True)
-    address.is_default = False
+    address.is_default = False 
+    address.save()
     new_address = AddressGlobal.objects.get(id=address_id)
     new_address.is_default=True
+    address.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
