@@ -82,6 +82,8 @@ def edit_address(request,address_id):
             return HttpResponseRedirect(reverse("accounts:address"))
     else:
         return HttpResponseRedirect(reverse("accounts:address"))
+    
+    return render(request,'accounts/edit_address.html',{"form":form})
 
 @login_required
 def add_address(request):
@@ -92,6 +94,8 @@ def add_address(request):
             address.user = request.user
             address.save()
             return HttpResponseRedirect(reverse('accounts:address'))
+    
+    return render(request,'accounts/add_address.html',{'form':form})
 
 
 @login_required
@@ -108,6 +112,6 @@ def set_default(request,address_id):
     new_address = AddressGlobal.objects.get(id=address_id)
     new_address.is_default=True
     address.save()
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
+    return HttpResponseRedirect(reverse('accounts:address'))
 
 

@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 User = get_user_model()
 
@@ -14,4 +16,11 @@ class Shop(models.Model):
         ordering = ('-name',)
     
     def __str__(self):
-        return self.name
+        return self.seller.name
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender,instance,created, **kwargs):
+    if created:
+        if instance.is_seller:
+            Shop.objects.create(seller=instance)

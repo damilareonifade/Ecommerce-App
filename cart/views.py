@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponseRedirect
 from django.urls import reverse
 from commerce.models import Product
 from .basket import Basket
@@ -30,6 +30,6 @@ def checkout(request):
     user = request.user
     user_address = AddressGlobal.objects.filter(user=request.user,is_default=True)
     if not user_address:
-        return reverse('accounts:address')
+        return HttpResponseRedirect(reverse('accounts:address'))
     
     return render(request,'basket/checkout.html',{'address':user_address})

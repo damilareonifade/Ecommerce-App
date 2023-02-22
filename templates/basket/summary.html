@@ -53,7 +53,7 @@
             </table>
             </div>
             <div class="col-lg-4">
-                <form class="mb-5" action="{% url 'basket:checkout' %}">
+                <form class="mb-5" action="">
                     <div class="input-group">
                         <input type="text" class="form-control p-4" placeholder="Coupon Code">
                         <div class="input-group-append">
@@ -80,7 +80,7 @@
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">Select Address And Location</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <a href="{% url 'basket:checkout' %}"><button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button></a>
                     </div>
                 </div>
             </div>
