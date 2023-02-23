@@ -81,7 +81,7 @@ def edit_address(request,address_id):
             form.save()
             return HttpResponseRedirect(reverse("accounts:address"))
     else:
-        return HttpResponseRedirect(reverse("accounts:address"))
+        form = AddressEditForm(instance=address)
     
     return render(request,'accounts/edit_address.html',{"form":form})
 
@@ -94,6 +94,8 @@ def add_address(request):
             address.user = request.user
             address.save()
             return HttpResponseRedirect(reverse('accounts:address'))
+    else:
+        form = AddressForm()
     
     return render(request,'accounts/add_address.html',{'form':form})
 

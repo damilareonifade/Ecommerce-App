@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from datetime import datetime
+from mptt.models import TreeForeignKey,MPTTModel
 
 
 
@@ -88,11 +89,16 @@ class AddressGlobal(models.Model):
     def __str__(self):
         return self.city
 
-class State(models.Model):
+class State(MPTTModel):
     name = models.CharField(max_length=72,unique=True)
+    parent = TreeForeignKey("self", null=True, blank=True, related_name="children",on_delete=models.CASCADE)
     price = models.CharField(max_length=250,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
     def __str__(self):
         return self.name

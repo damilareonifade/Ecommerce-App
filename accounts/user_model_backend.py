@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate
 class PhoneNumberBackend(ModelBackend):
 
     def authenticate(self, request, username, password, **kwargs):
-        print(request.POST.get('phone_number'))
         UserModel = get_user_model()
         try:
             user = UserModel.objects.get(phone_number=username,is_active=True)

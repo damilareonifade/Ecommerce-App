@@ -1,10 +1,12 @@
 {% extends '../base/base.html' %}
 
 {% block content %}
-
+<div class="container-fluid pt-5">
+<div class="text-center mx-auto">
 <h1 class="h2">Your Addresses</h1>
 <div>Manage your <b>addresses</b> and delivery preferences</div>
 <hr />
+</div>
 <div class="container px-0">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     <div class="col">
@@ -56,6 +58,7 @@
     </div>
     {% endfor %}
   </div>
+</div>
 </div>
 
 {% endblock %}
