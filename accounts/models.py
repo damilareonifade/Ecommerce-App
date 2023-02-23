@@ -90,7 +90,7 @@ class AddressGlobal(models.Model):
         return self.city
 
 class State(MPTTModel):
-    name = models.CharField(max_length=72,unique=True)
+    name = models.CharField(max_length=72)
     parent = TreeForeignKey("self", null=True, blank=True, related_name="children",on_delete=models.CASCADE)
     price = models.CharField(max_length=250,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -15,13 +15,19 @@
     {% endif %}
     {% csrf_token %}
     <div class="mb-3">
+      <label for="exampleFormControlTextarea1" class="form-label">Country</label>
       <div class="col-7">
-      {{ form.city|as_crispy_field }}
+          <input class="form-control" type="text" readonly placeholder="Nigeria"  aria-label=".form-control-lg example">
       </div>
     </div>
     <div class="mb-3">
       <div class="col-7">
       {{ form.state|as_crispy_field }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="col-7">
+      {{ form.city|as_crispy_field }}
       </div>
     </div>
     <div class="mb-3">

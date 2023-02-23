@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from mptt.forms import TreeNodeChoiceField
 from .models import AddressGlobal
+from accounts.models import State
 
 User = get_user_model()
 
@@ -24,6 +26,8 @@ class RegistrationForm(forms.ModelForm):
 
 
 class AddressForm(forms.ModelForm):
+    state = TreeNodeChoiceField(queryset=State.objects.filter(level=0))
+    address = forms.CharField(max_length=500,label='Address',widget=forms.TextInput(attrs={"class":"form-control"}))
     class Meta:
         model = AddressGlobal
         fields = ("address",'city','state')
