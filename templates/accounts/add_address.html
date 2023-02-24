@@ -3,7 +3,7 @@
 {% block title %}Edit Addresses{% endblock %}
 
 {% block content %}
-<div class="col-6 mx-auto">
+<div class="col-10" style="margin:60px 60px 60px 60px;">
   <h1 class="h3">Create/Edit Address</h1>
   <div>Add a new delivery <b>address</b> and delivery preferences</div>
   <hr />
@@ -55,5 +55,29 @@ function submitForm() {
    form.reset();  // Reset all form data
    return false; // Prevent page refresh
 }
+
+  $(document).change("#div_id_state option:selected", function(e) {
+  e.preventDefault();
+  $.ajax({
+      type: 'GET',
+      url: '{% url "accounts:get_city" %}',
+      data: {
+          state:$("#div_id_state option:selected").text(),
+          action: 'get',
+      },
+      success: function(response) {
+          console.log(response['city'])
+          $.each(response.city,function(index,value){                    
+                  var option = $('<option>');
+                  option.val(value.id);
+                  option.text(value.name);
+                  $("#planidcontainer").css("display", "block");
+                  $("#id_city").append(option);
+                  
+              })
+      }
+  });
+});
+
 </script>
 {% endblock %}

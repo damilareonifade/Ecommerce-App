@@ -35,6 +35,9 @@ urlpatterns = [
     path('edit-address/<slug:address_id>/',views.edit_address,name='edit_address'),
     path('delete-address/<slug:address_id>/',views.delete_address,name='delete_address'),
     path('setdefault/<slug:address_id>/',views.set_default,name='set_default'),
+
+    #Set city
+    path('get_city/',views.get_city,name='get_city'),
     
     
     

@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from datetime import datetime
 from mptt.models import TreeForeignKey,MPTTModel
-
+import uuid
 
 
 class CustomUserManager(BaseUserManager):
@@ -79,6 +79,7 @@ class UserProfile(models.Model):
 
 
 class AddressGlobal(models.Model):
+    # id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     address = models.TextField()
     city = models.CharField(max_length=250)

@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect,HttpResponseRedirect
+from django.shortcuts import render,redirect,HttpResponseRedirect,HttpResponse,get_object_or_404
 from django.urls import reverse
 from .forms import RegistrationForm,AddressEditForm,AddressForm
-from .models import create_user_activity,UserProfile,AddressGlobal
+from .models import create_user_activity,UserProfile,AddressGlobal,State
 from .tasks import send_registration_email
 from django.db import transaction
 from django.core.exceptions import ValidationError
@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from .user_model_backend import PhoneNumberBackend
 from django.contrib.auth.backends import ModelBackend
+from django.http import JsonResponse
 
 User = get_user_model()
 
@@ -108,12 +109,18 @@ def delete_address(request,address_id):
 
 @login_required
 def set_default(request,address_id):
-    address = AddressGlobal.objects.filter(user=request.user,is_default=True)
-    address.is_default = False 
-    address.save()
-    new_address = AddressGlobal.objects.get(id=address_id)
-    new_address.is_default=True
-    address.save()
+    address = AddressGlobal.objects.filter(user=request.user, is_default=True).update(is_default=False)
+    new_address = AddressGlobal.objects.filter(user=request.user,id=address_id).update(is_default=True)
     return HttpResponseRedirect(reverse('accounts:address'))
 
 
+def get_city(request):
+    if request.GET.get('action') == 'get':
+        state_ajax = str(request.GET.get('state',None))
+        print((state_ajax))
+        state = State.objects.get(name__iexact="Abia")
+        descendants = state.get_children()
+        product_list = list(descendants.values('name'))
+        response = JsonResponse({'city':product_list})
+        return response
+    return HttpResponse('There is an error on the click')

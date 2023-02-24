@@ -6,6 +6,7 @@ services:
     container_name: postgres_db
     volumes:
       - ./data/db:/var/lib/postgresql/data
+    restart: always
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
