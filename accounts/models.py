@@ -83,7 +83,7 @@ class AddressGlobal(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     address = models.TextField()
     city = models.CharField(max_length=250)
-    state = models.ForeignKey("State",null=True,blank=True,on_delete=models.CASCADE)
+    state = models.ForeignKey("State",null=True,blank=True,on_delete=models.CASCADE,related_name='address_state')
     country = models.CharField(max_length=100,default='Nigeria')
     is_default = models.BooleanField(default=False)
 

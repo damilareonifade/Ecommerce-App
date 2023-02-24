@@ -117,10 +117,11 @@ def set_default(request,address_id):
 def get_city(request):
     if request.GET.get('action') == 'get':
         state_ajax = str(request.GET.get('state',None))
-        print((state_ajax))
-        state = State.objects.get(name__iexact="Abia")
+        y = str(state_ajax)
+        state = State.objects.get(name__iexact=y)
         descendants = state.get_children()
         product_list = list(descendants.values('name'))
+        print(product_list)
         response = JsonResponse({'city':product_list})
         return response
     return HttpResponse('There is an error on the click')

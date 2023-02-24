@@ -28,8 +28,12 @@ def basket_all(request):
 @login_required()
 def checkout(request):
     user = request.user
+    basket = Basket(request)
     user_address = AddressGlobal.objects.filter(user=request.user,is_default=True)
     if not user_address:
         return HttpResponseRedirect(reverse('accounts:address'))
-    
+    for a in user_address:
+        y = a.state.price
+        basket.get_total_price(shipping=y)
+
     return render(request,'basket/checkout.html',{'address':user_address})

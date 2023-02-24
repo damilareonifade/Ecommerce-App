@@ -41,8 +41,16 @@ class Basket():
     def get_subtotal_price(self):
         return sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
     
-    def get_total_price(self):
-        pass
+    def get_total_price(self,shipping):
+        subtotal = sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
+
+        if subtotal == 0:
+            shipping = Decimal(0.00)
+        else:
+            shipping = shipping
+
+        total = subtotal + Decimal(shipping)
+        return total
 
 
     def update(self, product, qty):
