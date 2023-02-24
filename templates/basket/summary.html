@@ -42,10 +42,10 @@
                                     </button>
                                 </div>
                             </div>
-                        </td>
+                        </td><td class="align-middle">₦{{ item.total_price }}</td>
+                        <td class="align-middle"><a type="button"  id="delete-button" data-index="{{product.id}}" class=" update-button btn btn-sm btn-primary"><i class="fa fa-times"></i></a></button></td>
                         {% endwith %}
-                        <td class="align-middle">₦{{ item.total_price }}</td>
-                        <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                        
                     </tr>
                 </tbody>                
                 {% endfor %}
@@ -91,22 +91,31 @@
     
 
 <script>
-$(document).on("click","#add-button", function(e) {
-        s = $('#qty').val()
+$(document).on("click",".update-button", function(e) {
+        var prodid = $(this).data("index");
         console.log(s)
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '{% url "basket:basket_add" %}',
+            url: '{% url "basket:basket_delete" %}',
             data: {
-                productid:"{{product.id}}",
-                qty:$('#qty').val(),
-                csrfmiddlewaretoken:"{{csrf_token}}",                       
-                action: 'post',
+                productid: $(this).data("index"),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: "post",
             },
-            success: function(response) {
+            success: function(json) {
+                $('.product-item[data-index="' + prodid + '"]').remove();
+                if (json.qty == 0) {
+                    total = 0
+                    subtotal = 0
+                } else {
+                    total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
+                    subtotal = json.subtotal
+                }
                 console.log(response['qty'])
-                document.getElementById("basket-qty").innerHTML = response.qty
+                document.getElementById("subtotal").innerHTML = subtotal;
+                document.getElementById("basket-qty").innerHTML = json.qty;
+                document.getElementById("total").innerHTML = total;
             }
         });
     }); 
