@@ -21,7 +21,7 @@
                 <tbody class="align-middle">
                     {% for item in basket %}
                     {% with product=item.product %}
-                    <tr>
+                    <tr class="product-item" data-index="{{product.id}}">
                         {% for image in product.product_image.all %}
                         {% if image.is_feature%}
                         <td class="align-middle"><img src="{{image.image.url}}" alt="" style="width: 50px;"> {{product.name}}</td>
@@ -93,7 +93,7 @@
 <script>
 $(document).on("click",".update-button", function(e) {
         var prodid = $(this).data("index");
-        console.log(s)
+        console.log(prodid)
         e.preventDefault();
         $.ajax({
             type: 'POST',
@@ -112,7 +112,7 @@ $(document).on("click",".update-button", function(e) {
                     total = (parseFloat(json.subtotal) + 11.50).toFixed(2);
                     subtotal = json.subtotal
                 }
-                console.log(response['qty'])
+                console.log(json['qty'])
                 document.getElementById("subtotal").innerHTML = subtotal;
                 document.getElementById("basket-qty").innerHTML = json.qty;
                 document.getElementById("total").innerHTML = total;

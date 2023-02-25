@@ -48,21 +48,28 @@
 
 </div>
 
-<script> 
+<script>
+
+function submitForm() {
+   var form = document.getElementsByName('address_form')[0];
+   form.submit(); // Submit the form
+   form.reset();  // Reset all form data
+   return false; // Prevent page refresh
+}
   $(document).change("#div_id_state option:selected", function(e) {
   e.preventDefault();
   $.ajax({
       type: 'GET',
       url: '{% url "accounts:get_city" %}',
       data: {
-          state:$("#div_id_state option:selected").text(),
+          city:$("#div_id_state option:selected").val(),
           action: 'get',
       },
       success: function(response) {
           console.log(response['city'])
           $.each(response.city,function(index,value){                    
                   var option = $('<option>');
-                  option.val(value.id);
+                  option.val(value.name);
                   option.text(value.name);
                   $("#planidcontainer").css("display", "block");
                   $("#id_city").append(option);
