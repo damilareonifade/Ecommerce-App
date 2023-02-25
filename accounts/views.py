@@ -93,6 +93,16 @@ def add_address(request):
         if form.is_valid():
             address = form.save(commit=False)
             address.user = request.user
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            y = State.objects.get(name=city)
+            print(y)
+            z = State.objects.filter(name=state).first()
+            print(z)
+            if y.price <= z.price:
+                address.price = z.price
+            else:
+                address.price = y.price
             address.save()
             return HttpResponseRedirect(reverse('accounts:address'))
     else:

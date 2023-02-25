@@ -85,8 +85,9 @@ class AddressGlobal(models.Model):
     city = models.CharField(max_length=250)
     state = models.ForeignKey("State",null=True,blank=True,on_delete=models.CASCADE,related_name='address_state')
     country = models.CharField(max_length=100,default='Nigeria')
+    phone_number = models.CharField(max_length=250,null=True,blank=True)
     is_default = models.BooleanField(default=False)
-    price = models.IntegerField(max_length=200,blank=True,null=True)
+    price = models.CharField(max_length=200,blank=True,null=True)
 
     def __str__(self):
         return self.city

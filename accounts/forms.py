@@ -31,7 +31,7 @@ class AddressForm(forms.ModelForm):
     address = forms.CharField(max_length=500,label='Address',widget=forms.TextInput(attrs={"class":"form-control"}))
     class Meta:
         model = AddressGlobal
-        fields = ("address",'city','state')
+        fields = ("address",'city','state','price')
 
 class AddressEditForm(forms.ModelForm):
     class Meta:
