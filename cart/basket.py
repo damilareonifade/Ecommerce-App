@@ -1,6 +1,7 @@
 from django.conf import settings
 from commerce.models import Product
 from accounts.models import AddressGlobal
+from checkout.models import DeliveryOptions
 from decimal import Decimal
 
 class Basket():
@@ -42,17 +43,37 @@ class Basket():
     def get_subtotal_price(self):
         return sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
     
+    def basket_update_delivery(self, deliveryprice=0):
+        subtotal = sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
+        total = subtotal + Decimal(deliveryprice)
+        return total
+
+    
+    def get_delivery_price(self):
+        newprice = 0.00
+
+        if "purchase" in self.session:
+            newprice = AddressGlobal.objects.get(id=self.session["purchase"]["address_id"])
+            delivery_price = DeliveryOptions.objects.get(id=self.session["purchase"]["delivery_id"]).delivery_price
+            amount = int(newprice.state.price) + int(delivery_price)
+            return amount
+
     def get_total_price(self):
         subtotal = sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
-        # shipping = AddressGlobal.objects.get(user=user,is_default=True)
-
         if subtotal == 0:
-            shipping = Decimal(0.00)
+            total = Decimal(0.00)
+            return total            
+        
+        elif 'purchase' in self.session:
+            location_price = AddressGlobal.objects.get(id=self.session["purchase"]["address_id"])
+            delivery_price = DeliveryOptions.objects.get(id=self.session["purchase"]["delivery_id"]).delivery_price
+            shipping = int(location_price.state.price) + int(delivery_price)
+            total = subtotal + Decimal(shipping)        
+            return total
         else:
-            shipping = 100
-
-        total = subtotal + Decimal(shipping)
-        return total
+            total = Decimal(0.00)
+            return total
+     
 
 
     def update(self, product, qty):

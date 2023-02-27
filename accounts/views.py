@@ -121,6 +121,10 @@ def delete_address(request,address_id):
 def set_default(request,address_id):
     address = AddressGlobal.objects.filter(user=request.user, is_default=True).update(is_default=False)
     new_address = AddressGlobal.objects.filter(user=request.user,id=address_id).update(is_default=True)
+    previous_url = request.META.get("HTTP_REFERER")
+    if "checkout" in previous_url:
+        return redirect("checkout:checkout")
+
     return HttpResponseRedirect(reverse('accounts:address'))
 
 

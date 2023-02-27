@@ -15,8 +15,8 @@ from .models import DeliveryOptions
 @login_required
 def deliverychoices(request):
     deliveryoptions = DeliveryOptions.objects.filter(is_active=True)
-    address = AddressGlobal.objects.get(user=request.user,is_default=True)
-    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'address':address})
+    address = AddressGlobal.objects.filter(user=request.user)
+    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'addresses':address})
 
 
 @login_required
@@ -26,8 +26,8 @@ def basket_update_delivery(request):
         delivery_option = int(request.POST.get("deliveryoption"))
         delivery_type = DeliveryOptions.objects.get(id=delivery_option)
         address = AddressGlobal.objects.get(user=request.user,is_default=True)
-        delivery_price = delivery_type.price + address.state.price
-        updated_total_price = basket.basket_update_delivery(delivery_price)
+        deliveryprice = int(delivery_type.delivery_price) + int (address.state.price)
+        updated_total_price = basket.basket_update_delivery(deliveryprice)
 
         session = request.session
         if "purchase" not in request.session:

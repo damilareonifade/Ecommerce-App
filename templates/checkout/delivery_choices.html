@@ -24,7 +24,7 @@
       {% if deliveryoptions|length == 0 %}
       <div class="col-12">There are no delivery options <a href="{% url 'commerce:index' %}">Shop</a></div>
       {% else %}
-      <div class="col-md-4 col-lg-4 order-md-last p-0 order-3">
+      <div class="col-md-4 col-lg-3 order-md-last p-0 order-3">
         <div class="d-flex bd-highlight ms-0">
           <div class="p-2 flex-grow-1 bd-highlight">Sub Total:</div>
           <div class="p-2 bd-highlight"><span class="fw-bold h5">₦</span><span id="sub_total"
@@ -43,31 +43,72 @@
         <a role="button" href="#" class="btn btn-success fw-bold w-100"
           type="button">Pay Securely</a>
       </div>
-      <div class="col-md-7 col-lg-8">
-        {% for option in deliveryoptions %}
-        <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{option.id}}">
-          <div class="row g-0">
-            <div class="col-md-2 ps-3 ps-md-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-truck mt-2"
-                viewBox="0 0 16 16">
-                <path
-                  d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-              </svg>
-            </div>
-            <div class="col-md-9 ps-md-1">
-              <div class="card-body p-1">
-                <p class="card-text ps-2 mb-1 pt-1 fw-bold">{{option.delivery_name}}</p>
-                <p class="card-text ps-2 pb-3">Your order should be delivered within {{option.delivery_timeframe}}</p>
+      <div class="col-md-8 col-lg-9">
+        <div class="col-md-7 col-lg-9">
+          {% for option in deliveryoptions %}
+          <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{option.id}}">
+            <div class="row g-0">
+              <div class="col-md-2 ps-3 ps-md-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-truck mt-2"
+                  viewBox="0 0 16 16">
+                  <path
+                    d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                </svg>
+              </div>
+              <div class="col-md-9 ps-md-1">
+                <div class="card-body p-1">
+                  <p class="card-text ps-2 mb-1 pt-1 fw-bold">{{option.delivery_name}}</p>
+                  <p class="card-text ps-2 pb-3">Your order should be delivered within {{option.delivery_timeframe}}</p>
+                </div>
+              </div>
+              <div class="col-md-1 ps-md-1">
+                <input class="align-middle h-100" type="radio" name="deliveryOption" id="{{option.id}}"
+                  value="{{option.id}}">
               </div>
             </div>
-            <div class="col-md-1 ps-md-1">
-              <input class="align-middle h-100" type="radio" name="deliveryOption" id="{{option.id}}"
-                value="{{option.id}}">
+          </div>
+          {% endfor %}
+        </div>
+        <div class="col-md-12 col-lg-9">
+          {% for address in addresses %}
+          {% if not address.is_default %}
+            <h1 class="h5 pt-4">Other Addresses</h1>
+          {% else %}
+          <h1 class="h5 pt-4">Default Address</h1>
+          {% endif %}
+          <div class="card mb-3 border-1 rounded-0 product-item me-md-4" data-index="{{option.id}}">
+            <div class="row g-0">
+              <div class="col">
+                <div class="card pb-3 rounded-0">
+                  <div class="card-header bg-white small text-muted">
+                    {% if address.is_default %}
+                    Selected
+                    {% endif %}
+                    &nbsp;
+                  </div>
+                  <div class="card-body small pb-1">
+                    <p class="card-text m-0 fw-bold">{{address.address}}</p>
+                    <p class="card-text m-0">{{address.city}}</p>
+                    <p class="card-text m-0">{{address.state}}</p>
+                    <p class="card-text m-0">{{address.country}}</p>
+                    <p class="card-text m-0">{{address.phone_number}}</p>
+                    <p class="card-text m-0">Location Price {{address.state.price}}</p>
+                    <div class="pt-5">
+                      <a href="{% url 'accounts:edit_address' address.id %}" class="text-decoration-none">Edit</a>
+                      {% if not address.is_default %}
+                      | <a href="{% url 'accounts:set_default' address.id %}" class="text-decoration-none">Select</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        {% endfor %}
+          {% endfor %}
       </div>
+      </div>
+    <div>        
       {% endif %}
     </div>
   </div>
