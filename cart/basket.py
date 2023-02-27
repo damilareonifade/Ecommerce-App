@@ -1,5 +1,6 @@
 from django.conf import settings
 from commerce.models import Product
+from accounts.models import AddressGlobal
 from decimal import Decimal
 
 class Basket():
@@ -43,6 +44,7 @@ class Basket():
     
     def get_total_price(self):
         subtotal = sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
+        # shipping = AddressGlobal.objects.get(user=user,is_default=True)
 
         if subtotal == 0:
             shipping = Decimal(0.00)

@@ -99,9 +99,9 @@ def add_address(request):
             print(y)
             z = State.objects.filter(name=state).first()
             print(z)
-            if y.price <= z.price:
+            if y.price is not None and (z.price is None or y.price <= z.price):
                 address.price = z.price
-            else:
+            elif z.price is not None:
                 address.price = y.price
             address.save()
             return HttpResponseRedirect(reverse('accounts:address'))

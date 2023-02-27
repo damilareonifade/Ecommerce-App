@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'cart',
     'seller',
     'django_social_share',
+    'checkout',
     
     
 ]

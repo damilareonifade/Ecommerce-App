@@ -243,7 +243,17 @@
         </div>
     </div>
     <!-- Footer End -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up">
+    </i><span class="badge" id="basket-qty">
+        {% with total_qty=basket|length %}
+        {% if total_qty > 0 %}
+        {{ total_qty }} item in Cart
+        {% else %}
+            0
+        {% endif %}
+        {% endwith %}
+    </span></a>
     {% block scripts %}
     {% endblock %}
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>

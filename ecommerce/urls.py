@@ -8,4 +8,5 @@ urlpatterns = [
     path('cart/',include('cart.urls',namespace = "basket")),
     path('',include("commerce.urls",namespace='commerce')),
     path('seller/',include('seller.urls',namespace='seller')),
+    path('checkout/',include('checkout.urls',namespace='checkout')),
 ]
