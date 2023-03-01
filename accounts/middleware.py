@@ -4,13 +4,10 @@ class DashboardMiddleware:
         self.get_response = get_response
 
     
-    def __call__(self, request,*args, **kwargs):
+    def __call__(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            if request.user.is_seller:
-                request.session['dashboard'] = "seller"
-            else:
-                request.session['dasboard'] = 'normal'
-        
+            user_type = 'seller' if request.user.is_seller else 'normal'
+            request.session.setdefault('dashboard', {})['user_type'] = user_type
         else:
             request.session.pop('dashboard', None)
         

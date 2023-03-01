@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'seller',
     'django_social_share',
     'checkout',
+    'notification',
     'orders',
     'oauth2_provider',
     "django.contrib.sites",
@@ -54,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'accounts.middleware.DashboardMiddleware',
+    # 'accounts.middleware.DashboardMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'commerce.context_processor.category_list',
                 'commerce.context_processor.saved_post_count',
                 'cart.context_processor.basket',
+                'notification.context_processor.notification_list',
             ],
         },
     },

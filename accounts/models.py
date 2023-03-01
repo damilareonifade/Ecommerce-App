@@ -123,9 +123,3 @@ class UserActivity(models.Model):
 def create_user_activity(user,option):
     UserActivity.objects.create(user=user,email=user.email,full_name=user.name,option=option)
 
-
-class DummyModel(models.Model):
-    name = models.CharField(max_length=250,null=True,blank=True)
-
-    def __str__(self):
-        return self.name

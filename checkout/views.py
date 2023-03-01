@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from .models import DeliveryOptions,PaymentSelections
 from accounts.models import AddressGlobal
 from django.contrib.auth.decorators import login_required
@@ -17,7 +17,13 @@ from django.http import Http404
 def deliverychoices(request):
     deliveryoptions = DeliveryOptions.objects.filter(is_active=True)
     address = AddressGlobal.objects.filter(user=request.user)
-    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'addresses':address})
+    user_address = AddressGlobal.objects.filter(user=request.user,is_default=True)
+    if not user_address:
+        return HttpResponseRedirect(reverse('accounts:address'))  
+
+    for address in user_address:
+        addresses = address.state.price        
+    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'addresses':address,'price':addresses})
 
 
 @login_required
@@ -47,18 +53,14 @@ def basket_update_delivery(request):
 def checkout(request):
     user = request.user
     basket = Basket(request)
-    try:
-        user_address = get_object_or_404(AddressGlobal, user=request.user,is_default=True)
-    except Http404:
-        address_exists = False
+    user_address = AddressGlobal.objects.filter(user=user,is_default=True)
+    if not user_address:
+        return HttpResponseRedirect(reverse('accounts:address'))  
 
-    if user_address:
-        address = user_address.state.price
-    else:
-        return HttpResponseRedirect(reverse('accounts:address'))
-        
+    for address in user_address:
+        addresses = address.state.price        
 
-    return render(request,'basket/checkout.html',{'address':user_address,'address_price':address})
+    return render(request,'basket/checkout.html',{'address':user_address,'address_price':addresses})
 
 @login_required
 def delivery_address(request):

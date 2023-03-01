@@ -25,16 +25,17 @@ class Basket():
 
     def __iter__(self):
         product_ids = self.basket.keys()
-        products = Product.objects.filter(id__in = product_ids)
-
+        products = Product.objects.filter(id__in=product_ids)
         basket = self.basket.copy()
 
         for product in products:
-            basket[str(product.id)]['product'] = product
+            basket[str(product.id)]["product"] = product
+
 
         for item in basket.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * int(item['qty'])
+            item['price'] = item['price']
+            item['total_price'] = Decimal(item['price']) * int(item['qty'])
+            item['total_price']
             yield item
     
     def __len__(self):
