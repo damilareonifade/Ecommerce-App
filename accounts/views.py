@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect,HttpResponse,get_object_or_404
+from django.http import HttpResponseBadRequest
 from django.urls import reverse
+from django.conf import settings
 from .forms import RegistrationForm,AddressEditForm,AddressForm
 from .models import create_user_activity,UserProfile,AddressGlobal,State
 from .tasks import send_registration_email
@@ -8,12 +10,15 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
-from django.contrib.auth import get_user_model,login
+from django.contrib.auth import get_user_model,login,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from .user_model_backend import PhoneNumberBackend
 from django.contrib.auth.backends import ModelBackend
 from django.http import JsonResponse
+from django.shortcuts import redirect
+from google.oauth2.credentials import Credentials
+from oauth2_provider.views.generic import ProtectedResourceView
 
 User = get_user_model()
 
@@ -137,3 +142,4 @@ def get_city(request):
         response = JsonResponse({'city':product_list})
         return response
     return HttpResponse('There is an error on the click')
+

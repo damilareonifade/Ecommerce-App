@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from .models import DeliveryOptions,PaymentSelections
 from accounts.models import AddressGlobal
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from .models import DeliveryOptions
+from django.http import Http404
 
 
 @login_required
@@ -46,13 +47,18 @@ def basket_update_delivery(request):
 def checkout(request):
     user = request.user
     basket = Basket(request)
-    user_address = AddressGlobal.objects.filter(user=request.user,is_default=True)
-    if not user_address:
-        return HttpResponseRedirect(reverse('accounts:address'))
-    for a in user_address:
-        y = a.state.price
+    try:
+        user_address = get_object_or_404(AddressGlobal, user=request.user,is_default=True)
+    except Http404:
+        address_exists = False
 
-    return render(request,'basket/checkout.html',{'address':user_address})
+    if user_address:
+        address = user_address.state.price
+    else:
+        return HttpResponseRedirect(reverse('accounts:address'))
+        
+
+    return render(request,'basket/checkout.html',{'address':user_address,'address_price':address})
 
 @login_required
 def delivery_address(request):

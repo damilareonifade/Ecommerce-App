@@ -34,9 +34,17 @@ INSTALLED_APPS = [
     'seller',
     'django_social_share',
     'checkout',
+    'orders',
+    'oauth2_provider',
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
     
-    
-]
+ ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -46,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.DashboardMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
@@ -70,6 +79,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
+SITE_ID = 1
 
 
 # Database

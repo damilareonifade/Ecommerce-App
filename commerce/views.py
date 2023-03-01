@@ -135,7 +135,7 @@ def product_search(request):
         if 'search' in request.GET:
             search = request.GET.get("search",None)
             query = SearchQuery(search)
-            product = Product.objects.annotate(search=SearchVector('sku','name','product_description','seller','brand')).filter(search=query)
+            product = Product.objects.annotate(search=SearchVector('sku','name','product_description','seller','category','brand')).filter(search=query)
             
             paginator = Paginator(product,20)
             try:

@@ -16,7 +16,7 @@ class Basket():
     def add(self,product,product_qty):
         product_id= str(product.id)
         if product_id in self.basket:
-            self.basket['product_id']['qty'] = product_qty
+            self.basket[product_id]['qty'] = product_qty
         
         else:
             self.basket[product_id] = {'price':str(product.price),'qty':str(product_qty)}
