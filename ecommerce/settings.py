@@ -167,8 +167,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CART_ID = 'cart'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     #phone number login
     "accounts.user_model_backend.PhoneNumberBackend",
+    'allauth.account.auth_backends.AuthenticationBackend',
+    # 'allauth.socialaccount.providers.google.auth.GoogleOAuth2Adapter',
+    # 'allauth.socialaccount.providers.google.provider.GoogleProvider',
 ]
