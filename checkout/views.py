@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .models import DeliveryOptions,PaymentSelections
 from accounts.models import AddressGlobal
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from cart.basket import Basket
 from django.urls import reverse
 import json
@@ -16,14 +17,15 @@ from django.http import Http404
 @login_required
 def deliverychoices(request):
     deliveryoptions = DeliveryOptions.objects.filter(is_active=True)
-    address = AddressGlobal.objects.filter(user=request.user)
+    my_address = AddressGlobal.objects.filter(user=request.user)
     user_address = AddressGlobal.objects.filter(user=request.user,is_default=True)
     if not user_address:
+        messages.warning(request,'You have to create an address before going to checkout')
         return HttpResponseRedirect(reverse('accounts:address'))  
 
     for address in user_address:
         addresses = address.state.price        
-    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'addresses':address,'price':addresses})
+    return render(request, "checkout/delivery_choices.html", {"deliveryoptions": deliveryoptions,'addresses':my_address,'price':addresses})
 
 
 @login_required
@@ -33,7 +35,7 @@ def basket_update_delivery(request):
         delivery_option = int(request.POST.get("deliveryoption"))
         delivery_type = DeliveryOptions.objects.get(id=delivery_option)
         address = AddressGlobal.objects.get(user=request.user,is_default=True)
-        deliveryprice = int(delivery_type.delivery_price) + int (address.state.price)
+        deliveryprice = int(delivery_type.delivery_price) + int(address.state.price)
         updated_total_price = basket.basket_update_delivery(deliveryprice)
 
         session = request.session
@@ -46,7 +48,7 @@ def basket_update_delivery(request):
             session["purchase"]['address_id'] = address.id
             session.modified = True
 
-        response = JsonResponse({"total": updated_total_price, "delivery_price": delivery_type.delivery_price})
+        response = JsonResponse({"total": updated_total_price, "delivery_price": deliveryprice})
         return response
 
 @login_required()

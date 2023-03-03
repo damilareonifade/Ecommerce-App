@@ -44,7 +44,7 @@ class Basket():
     def get_subtotal_price(self):
         return sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
     
-    def basket_update_delivery(self, deliveryprice=0):
+    def basket_update_delivery(self, deliveryprice):
         subtotal = sum(Decimal(item['price']) * int(item['qty']) for item in self.basket.values())
         total = subtotal + Decimal(deliveryprice)
         return total
@@ -67,8 +67,7 @@ class Basket():
         
         elif 'purchase' in self.session:
             location_price = AddressGlobal.objects.get(id=self.session["purchase"]["address_id"])
-            delivery_price = DeliveryOptions.objects.get(id=self.session["purchase"]["delivery_id"]).delivery_price
-            shipping = int(location_price.state.price) + int(delivery_price)
+            shipping = int(location_price.state.price)
             total = subtotal + Decimal(shipping)        
             return total
         else:
