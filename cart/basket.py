@@ -71,7 +71,7 @@ class Basket():
             total = subtotal + Decimal(shipping)        
             return total
         else:
-            total = Decimal(0.00)
+            total = subtotal
             return total
      
 

@@ -95,16 +95,3 @@ def payment_selection(request):
 
 
 
-
-# def delivery_price(request):
-#     session = request.session
-#     address = AddressGlobal.objects.filter(user=request.user,is_default=True)
-#     damilare = request.session.get('purchase')
-#     if 'purchase' not in request.session:
-#         damilare = request.session['purchase']= {}
-#     damilare['purchase'] = {'id':str(address.id)}
-
-
-
-
-

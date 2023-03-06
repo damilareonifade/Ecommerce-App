@@ -38,9 +38,9 @@
         <div class="d-flex bd-highlight">
           <div class="p-2 flex-grow-1 bd-highlight">Total:</div>
           <div class="p-2 bd-highlight"><span class="fw-bold h5">₦</span><span id="total"
-              class="fw-bold h5">{{basket.get_total_price}}</span></div>
+              class="fw-bold h5">{{ basket.get_total_price }}</span></div>
         </div>
-        <a role="button" href="#" class="btn btn-success fw-bold w-100"
+        <a role="button" href="{% url 'orders:check_payment' %}" class="btn btn-success fw-bold w-100"
           type="button">Pay Securely</a>
       </div>
       <div class="col-md-8 col-lg-9">
@@ -58,7 +58,8 @@
               <div class="col-md-9 ps-md-1">
                 <div class="card-body p-1">
                   <p class="card-text ps-2 mb-1 pt-1 fw-bold">{{option.delivery_name}}</p>
-                  <p class="card-text ps-2 pb-3">Your order should be delivered within {{option.delivery_timeframe}}</p>
+                  <p class="card-text ps-2 pb-3">Your order should be delivered within {{option.delivery_timeframe}} for 
+                    ₦{{ option.delivery_price }} </p>
                 </div>
               </div>
               <div class="col-md-1 ps-md-1">
