@@ -88,7 +88,7 @@ def payment_selection(request):
     session = request.session
     if "address" not in request.session:
         messages.success(request, "Please select address option")
-        return HttpResponseRedirect(request.META["HTTP_REFERER"])
+        return HttpResponseRedirect(request.META.get["HTTP_REFERER"])
 
     return render(request, "checkout/payment_selection.html", {})
 

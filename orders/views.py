@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponseRedirect
+from django.shortcuts import render,HttpResponseRedirect,HttpResponse
 import aiohttp
 from django.urls import reverse
 from django.contrib import messages
@@ -12,6 +12,7 @@ from asgiref.sync import sync_to_async,async_to_sync
 def check_payment(request):
     if 'purchase' in request.session and 'delivery_id' in request.session['purchase']:
         return HttpResponseRedirect(reverse('orders:make_payment'))
+        
     else:
         messages.info(request,'Select a Delivery Option')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -30,7 +31,7 @@ async def make_payment(request):
     }
     data = {
         "tx_ref": tx_ref,
-        "amount": "100",
+        "amount": 1000,
         "currency": "NGN",
         "payment_options": "card",
         "customer": {
@@ -47,9 +48,10 @@ async def make_payment(request):
         async with session.post(url,headers=headers, json=data) as response:
             response_data = await response.json()
             if response_data['status'] == 'success':
-                pass
+                z = response_data['data']['link']
+                return HttpResponseRedirect(z)
             else:
-                pass
+                return HttpResponse('Guy something is wrong')
 
 
 def payment_callback(request):
