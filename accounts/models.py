@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from datetime import datetime
 from mptt.models import TreeForeignKey,MPTTModel
 import uuid
+from django.db import transaction
 
 
 class CustomUserManager(BaseUserManager):
@@ -57,7 +58,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.email
 
-
+@transaction.atomic()
 @receiver(post_save, sender=CustomUser)
 def create_user_profile(sender,instance,created, **kwargs):
     if created:
@@ -119,7 +120,8 @@ class UserActivity(models.Model):
     
     def __str__(self):
         return f"{self.full_name} {self.option}"
-    
+
+@transaction.atomic()   
 def create_user_activity(user,option):
     UserActivity.objects.create(user=user,email=user.email,full_name=user.name,option=option)
 

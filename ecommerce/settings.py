@@ -146,8 +146,8 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 #default user model
 AUTH_USER_MODEL = 'accounts.CustomUser'
-LOGIN_URL = '/accounts:login'
-LOGOUT_URL = '/accounts:logout'
+LOGIN_URL = '/accounts/login'
+LOGOUT_URL = '/accounts/logout'
 
 #email_backend
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'

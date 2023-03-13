@@ -4,12 +4,14 @@ from django.urls import reverse
 from .permissions import seller
 from .forms import RegistrationForm
 from accounts.models import create_user_activity
+from commerce.models import Product
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth import get_user_model,login
 from accounts.tasks import send_registration_email
 from django.db import transaction
+from django.db.models import Sum,F
 
 User = get_user_model()
 
@@ -48,6 +50,9 @@ def activate(request,uidb64,token):
     else:
         return render(request, 'accounts/registration/activation_invalid.html')
 
-
+@login_required
 def seller_dashboard(request):
-    pass
+    user = request.user
+    amt_of_product_avail = Product.objects.filter(seller_id=1).aggregate(total_price=Sum(F('showed_price') * F('product_stock__in_stock')))['total_price']
+    amt_of_product_sold = Product.objects.filter(seller_id=1).aggregate(total_price=Sum(F('showed_price') * F('product_stock__sold_stock')))['total_price']
+

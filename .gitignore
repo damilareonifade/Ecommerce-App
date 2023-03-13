@@ -6,4 +6,6 @@
 /to_do_for.txt
 *.css*
 *.js*
-*scss*
+*.scss*
+*.woff*
+*.svg*

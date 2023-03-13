@@ -5,7 +5,9 @@ import uuid
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.contrib.postgres.indexes import GinIndex
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.db import transaction
 
 
 User = get_user_model()
@@ -88,23 +90,16 @@ class Product(TimeStampedModel):
     
 class Stock(TimeStampedModel):
     product = models.OneToOneField(Product,on_delete=models.CASCADE,related_name='product_stock')
-    in_stock = models.IntegerField(default=0)
-    total_stock = models.IntegerField(default=0)
-    sold_stock = models.IntegerField(default=0)
+    in_stock = models.IntegerField(default=1)
+    total_stock = models.IntegerField(default=1)
+    sold_stock = models.IntegerField(default=1)
 
-    def save(self,*args, **kwargs):
-        is_new = self.pk is None
-        if is_new:
-            self.in_stock = self.total_stock - self.sold_stock
-        super().save(*args, **kwargs)
-        if not is_new:
-            self.in_stock = self.total_stock - self.sold_stock
-        super().save(*args, **kwargs)
+    def update_in_stock(self):
+        self.in_stock = self.total_stock - self.sold_stock
+        self.save(update_fields=['in_stock'])
     
     def __str__(self):
-        return f'{self.product.name } available stock is {self.in_stock}'
-
-    
+        return f'{self.product.name } available stock is {self.in_stock}'   
 
 
 class ProductImage(TimeStampedModel):
@@ -191,6 +186,17 @@ class Reviews(TimeStampedModel):
 class IpAddress(models.Model):
     ip_address = models.GenericIPAddressField()
     product_id = models.ForeignKey(Product,on_delete=models.SET_NULL,null=True,blank=True)
+
+@transaction.atomic()
+@receiver(post_save, sender=Product)
+def stock_save_receiver(sender,instance, created,**kwargs):
+    if created:
+        Stock.objects.create(product=instance)
+
+@transaction.atomic()
+@receiver(post_save, sender=Stock)
+def update_stock(sender, instance, **kwargs):
+    instance.update_in_stock()
 
 
 # from django.core.exceptions import ValidationError

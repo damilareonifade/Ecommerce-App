@@ -58,8 +58,11 @@ def activate(request,uidb64,token):
         return redirect('accounts:dashboard')
     else:
         return render(request, 'accounts/registration/activation_invalid.html')
-    
+
+@login_required()
 def dashboard(request):
+    if request.user.is_seller():
+        return redirect("seller:dashboard")
     profile = UserProfile.objects.get(user=request.user)
     return render(request,'accounts/registration/profile.html',{'profile':profile})
 

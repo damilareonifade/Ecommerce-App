@@ -8,18 +8,23 @@ from cart.basket import Basket
 import string
 import random
 from asgiref.sync import sync_to_async,async_to_sync
+import asyncio
+from django.contrib.auth.decorators import login_required
 
+
+login_required()
 def check_payment(request):
+    user = request.user
+    basket = Basket(request)
+    price = int(basket.get_total_price())
     if 'purchase' in request.session and 'delivery_id' in request.session['purchase']:
-        return HttpResponseRedirect(reverse('orders:make_payment'))
+        asyncio.run(make_payment(price))
         
     else:
         messages.info(request,'Select a Delivery Option')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-async def make_payment(request):  
-    user = await sync_to_async(lambda: request.user)()
-    basket = await sync_to_async(Basket)(request)
+async def make_payment(request,price):  
     digits = ''.join(random.choices(string.digits, k=4))
     strings = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=4))
     tx_ref = strings + digits
@@ -31,15 +36,15 @@ async def make_payment(request):
     }
     data = {
         "tx_ref": tx_ref,
-        "amount": 1000,
+        "amount": price,
         "currency": "NGN",
         "payment_options": "card",
         "customer": {
-            "email": await sync_to_async(lambda: request.user.email)(),
+            "email": await sync_to_async(lambda x: request.user) ,
         },
         "redirect_url": "http://example.com/redirect",
         "meta": {
-            "user_id": user.id,
+            "user_id":3,
             "invoice_id": "67890"
         }
     }
