@@ -3,6 +3,7 @@ from django.urls import reverse
 from commerce.models import Product
 from .basket import Basket
 import json
+from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -13,6 +14,12 @@ def basket_add(request):
         product_id = int(request.POST.get("productid",None))
         product_qty = int(request.POST.get('qty',None))
         product = Product.objects.get(id=product_id)
+        author = product.seller
+        if product.product_stock.in_stock < product_qty:
+            messages.info(request,"The product is sold out you can check other vendors")
+            response = JsonResponse({"qty":'Product is sold out'})
+            return response
+
         basket.add(product=product,product_qty=product_qty)
 
         basketqty = basket.__len__()

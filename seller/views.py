@@ -55,4 +55,12 @@ def seller_dashboard(request):
     user = request.user
     amt_of_product_avail = Product.objects.filter(seller_id=1).aggregate(total_price=Sum(F('showed_price') * F('product_stock__in_stock')))['total_price']
     amt_of_product_sold = Product.objects.filter(seller_id=1).aggregate(total_price=Sum(F('showed_price') * F('product_stock__sold_stock')))['total_price']
+    latest_user_product = Product.objecs.filter(user=request.user)[:5]
+    context = {'product_available':amt_of_product_avail,"product_sold":amt_of_product_sold,"latest_user_product":latest_user_product}
+
+
+    return render(request,'seller/index.html',context)
+    
+
+
 
