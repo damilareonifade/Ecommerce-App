@@ -55,11 +55,11 @@
                 {% for attr_name, attribute_values in attribute_dict.items %}
                 <div class="d-flex mb-3">
                     <p class="text-dark font-weight-medium mb-0 mr-3">{{ attr_name }}:</p>
-                    <form>
+                    <form id ="attribute-values-form">
                         {% csrf_token %}
                         {% for attribute_value in attribute_values %}
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" class="custom-control-input" id="{{ attribute_value.attribute_value }}-{{ forloop.counter }}" name="size">
+                            <input type="radio" class="custom-control-input" id="{{ attribute_value.attribute_value }}-{{ forloop.counter }}" value="{{ attribute_value.attribute_value }}" name="{{ attribute_value.attribute_value }}">
                             <label class="custom-control-label" for="{{ attribute_value.attribute_value }}-{{ forloop.counter }}">{{ attribute_value.attribute_value }}</label>
                         </div>
                         {% endfor %}
@@ -169,14 +169,22 @@
 
 <script>
 $(document).on("click","#add-button", function(e) {
+    e.preventDefault();
     s = $('#qty').val()
     console.log(s)
-    e.preventDefault();
+    var selectedValues = {};
+    $('.custom-control-input:checked').each(function() {
+            var attributeValue = $(this).val();
+            var attributeName = $(this).attr('name');
+            selectedValues[attributeName] = attributeValue;
+        });
+        console.log(selectedValues)
     $.ajax({
         type: 'POST',
         url: '{% url "basket:basket_add" %}',
         data: {
             productid:"{{product.id}}",
+            selected_values: JSON.stringify(selectedValues),
             qty:$('#qty').val(),
             csrfmiddlewaretoken:"{{csrf_token}}",                       
             action: 'post',
@@ -187,5 +195,7 @@ $(document).on("click","#add-button", function(e) {
         }
     });
 });
+
+
 </script>
 {% endblock %}

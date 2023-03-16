@@ -13,13 +13,13 @@ class Basket():
             basket = request.session[settings.CART_ID] ={}
         self.basket = basket
     
-    def add(self,product,product_qty):
+    def add(self,product,product_qty,seller,attribute_name):
         product_id= str(product.id)
         if product_id in self.basket:
             self.basket[product_id]['qty'] = product_qty
         
         else:
-            self.basket[product_id] = {'price':str(product.price),'qty':str(product_qty)}
+            self.basket[product_id] = {'price':str(product.price),'qty':str(product_qty),'seller':str(seller),"attribute_name":attribute_name}
         
         self.save()
 

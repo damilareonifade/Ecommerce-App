@@ -9,8 +9,10 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
     extra = 3
 
+class StockInline(admin.TabularInline):
+    model = Stock
 
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImageInline]
+    inlines = [StockInline,ProductImageInline,]
     
 admin.site.register(Product,ProductAdmin)
